@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Setting;
+
 function month($month){
     if($month == 1){
         return "Januari";
@@ -37,4 +39,9 @@ function month($month){
     else if($month == 12){
         return "Desember";
     }
+}
+
+function getSettings($nama)
+{
+    return Setting::where('nama', $nama)->first()->value;
 }

@@ -139,7 +139,7 @@
             <td colspan="3">&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="3">Eka</td>
+            <td colspan="3">{{getSettings('bendahara')}}</td>
         </tr>
     </table>
     <table style="float:right; padding-right:100px">
@@ -157,7 +157,7 @@
             <td colspan="3">&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="3">Ni Wayan Novita Damayanti</td>
+            <td colspan="3">{{getSettings('kepala')}}</td>
         </tr>
     </table>
 </body>

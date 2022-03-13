@@ -25,6 +25,7 @@
         <link rel="stylesheet" href="{{ asset('assets/libs/sweetalert/sweetalert.min.css') }}">
         <link rel="stylesheet" href="{{asset('assets/libs/parsley-js/parsley.css')}}">
         <link rel="stylesheet" href="{{asset('assets/libs/select2/css/select2.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('assets/libs/dropify/css/dropify.css') }}">
         <style>
 
               .select2-container .select2-selection--single {
@@ -183,7 +184,7 @@
                         <h2>SIP</h2>
                     </span>
                     <span class="logo-lg">
-                        <h4>Sistem Informasi Penjualan</h4>
+                        <img src="{{asset(getSettings('logo'))}}" width="200px" height="80px" alt="">
                     </span>
                 </a>
 
@@ -192,7 +193,7 @@
                         <h4>SIP</h4>
                     </span>
                     <span class="logo-lg">
-                        <h4>Sistem Informasi Penjualan</h4>
+                        <img src="{{asset(getSettings('logo'))}}" width="200px" height="80px" alt="">
                     </span>
                 </a>
             </div>
@@ -279,6 +280,12 @@
                                     <li><a class="@if(Auth::user()->role != 1) block-page @endif" href="@if(Auth::user()->role == 1) {{route('tempat-wisata.index')}}  @else javascript: void(0); @endif">Tempat Wisata</a></li>
                                     <li><a class="@if(Auth::user()->role != 1) block-page @endif" href="@if(Auth::user()->role == 1) {{route('user.index')}}  @else javascript: void(0); @endif">User</a></li>
                                 </ul>
+                            </li>
+                            <li>
+                                <a href="@if(Auth::user()->role == 1) {{route('pengaturan')}}  @else javascript: void(0); @endif" class="waves-effect @if(Auth::user()->role != 1) block-page @endif">
+                                    <i class="fa fa-cog"></i>
+                                    <span>Pengaturan</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -367,6 +374,7 @@
         <script src="{{asset('assets/libs/peity/jquery.peity.min.js')}}"></script>
 
         <script src="{{asset('assets/libs/raphael/raphael.min.js')}}"></script>
+        <script src="{{ asset('assets/libs/dropify/js/dropify.js') }}"></script>
         
         <!-- Dashboard init JS -->
         <script src="{{asset('assets/js/pages/dashboard.init.js')}}"></script>

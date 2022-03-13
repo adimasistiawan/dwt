@@ -7,6 +7,7 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,9 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/user/data', [UserController::class, 'data'])->name('user.data');
         Route::resource('user', UserController::class);
+
+        Route::get('/pengaturan', [SettingController::class, 'index'])->name('pengaturan');
+        Route::post('/pengaturan/store', [SettingController::class, 'store'])->name('pengaturan.store');
     });
 
     Route::middleware(['user2'])->group(function () {

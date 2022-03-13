@@ -66,8 +66,8 @@ class PenjualanController extends Controller
         // })
         ->addColumn('action', function($row){
             if(Auth::user()->role == 3){
-                $btn = '<div class="btn btn-warning btn-sm edit mr-2 waves-effect" data-id="'.$row->id.'"  data-toggle="modal"><i class="fa fa-edit"></i> Ubah</div> &nbsp;';
-                $btn .= '<a href="'.route('penjualan.show', $row->id).'" class="btn btn-success btn-sm mr-2 waves-effect"><i class="fa fa-search"></i> Lihat</a> &nbsp;';
+             
+                $btn = '<a href="'.route('penjualan.show', $row->id).'" class="btn btn-success btn-sm mr-2 waves-effect"><i class="fa fa-search"></i> Lihat</a> &nbsp;';
           
             }else{
                 $btn = '<a href="'.route('penjualan.show', $row->id).'" class="btn btn-success btn-sm mr-2 waves-effect"><i class="fa fa-search"></i> Lihat</a> &nbsp;';
@@ -222,7 +222,7 @@ class PenjualanController extends Controller
 
     public function change_status_all(Request $request)
     {
-        Penjualan::where('status',0)->where('place_id', Auth::user()->place_id)->update(['status' => 1]);
+        Penjualan::where('status',0)->update(['status' => 1]);
         Session::flash('success', 'Berhasil'); 
         return 1;
     }

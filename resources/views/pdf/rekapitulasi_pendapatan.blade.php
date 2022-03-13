@@ -130,7 +130,7 @@
                         <br>
                         <br>
                         <br>
-                        Eka
+                        {{getSettings('bendahara')}}
                     </div>
                 </td>
                 <td width="35%">
@@ -141,7 +141,7 @@
                         <br>
                         <br>
                         <br>
-                        Ni Wayan Novita Damayanti
+                        {{getSettings('kepala')}}
                     </div>
                 </td>
                 <td width="35%">
@@ -152,7 +152,7 @@
                         <br>
                         <br>
                         <br>
-                        I Made Rediana
+                        {{getSettings('sekretaris')}}
                     </div>
                 </td>
             </tr>
