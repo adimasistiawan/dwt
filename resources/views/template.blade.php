@@ -184,7 +184,7 @@
                         <h2>SIP</h2>
                     </span>
                     <span class="logo-lg">
-                        <img src="{{asset(getSettings('logo'))}}" width="200px" height="80px" alt="">
+                        <img src="{{asset(getSettings('logo'))}}" width="150px" height="50px" alt="">
                     </span>
                 </a>
 
@@ -193,7 +193,7 @@
                         <h4>SIP</h4>
                     </span>
                     <span class="logo-lg">
-                        <img src="{{asset(getSettings('logo'))}}" width="200px" height="80px" alt="">
+                        <img src="{{asset(getSettings('logo'))}}" width="200px" height="50px" alt="">
                     </span>
                 </a>
             </div>
@@ -302,7 +302,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-12 text-center">
-                                <script>document.write(new Date().getFullYear())</script> © Unit Desa Wisata Taro | Sistem Informasi Penjualan <span
+                                <script>document.write(new Date().getFullYear())</script> © Unit Desa Wisata Taro | POST <span
                                     class="d-none d-sm-inline-block">
                                     {{-- - Crafted with <i class="mdi mdi-heart text-primary"></i> by
                                     Themesbrand.</span> --}}

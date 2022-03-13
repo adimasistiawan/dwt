@@ -30,7 +30,7 @@
                     <div class="auth-logo">
                         <h3 class="text-center">
                             <a href="index.html" class="logo d-block mt-4">
-                                <h1>Sistem Informasi Penjualan</h1>
+                                <h3>Unit Desa Wisata Taro | POST</h3>
                             </a>
                             {{-- <b style="font-size: 14px;">Exellent Notary System</b> --}}
                         </h3>
