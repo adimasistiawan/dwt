@@ -36,7 +36,7 @@
                             <h4 class="card-title">Produk</h4>
                             <div class="row mt-4">
                                 <div class="col-md-2">
-                                    <label class="form-label">Tempat Wisata</label>
+                                    <label class="form-label">Rekanan Usaha</label>
                                     <select name="tempat_wisata" id="tempat_wisata" class="form-control select2-filter">
                                         <option value=""></option>
                                         @foreach ($place as $item)
@@ -70,7 +70,7 @@
 
                                         <b><u>LAPORAN PRODUK</u></b>
                                     </div>
-                                    <b>Tempat Wisata : <span class="tempat_wisata"></span></b><br>
+                                    <b>Rekanan Usaha : <span class="tempat_wisata"></span></b><br>
                                     <b>Nama Produk : <span class="nama_produk"></span></b><br>
                                     <b>Dari Tanggal : <span class="dari"></span></b><br>
                                     <b>Sampai Tanggal : <span class="sampai"></span></b>
@@ -141,6 +141,9 @@
             }
 
             $('.search').click(function(){
+                if($('#dari').val() == '' && $('#sampai').val() == '' && $('#tempat_wisata').val() == '' && $('#produk').val() == ''){
+                    return false;
+                }
                 $('.export').empty();
                 $('.loading').removeAttr('hidden')
                 $('.tbody').empty();
@@ -180,13 +183,13 @@
                         <tr>
                             <td class="text-left">`+value.penjualan.kode+`</td>
                             <td class="text-center">`+moment(value.penjualan.tanggal).format("DD-MM-YYYY")+`</td>
-                            <td class="text-right">`+numberWithCommas(value.harga)+`</td>
-                            <td class="text-right">`+numberWithCommas(value.qty)+`</td>
-                            <td class="text-right">`+numberWithCommas(value.sub_total)+`</td>
+                            <td class="text-right">`+numberWithCommas(parseInt(value.harga))+`</td>
+                            <td class="text-right">`+numberWithCommas(parseInt(value.qty))+`</td>
+                            <td class="text-right">`+numberWithCommas(parseInt(value.sub_total))+`</td>
                             <td class="text-left">`+(value.penjualan.keterangan == null? "":value.penjualan.keterangan)+`</td>
                         </tr>
                         `)
-                        total+=value.sub_total
+                        total+=parseInt(value.sub_total)
                        
                     });
                     $('.tbody').append(`
@@ -199,7 +202,7 @@
                         $('.tbody').append(`
                         <tr>
                             <th class="text-right" colspan="4">Komisi `+response['komisi']+`%</th>
-                            <th class="text-right" >`+numberWithCommas((total * parseInt(response['komisi']) / 100 ))+`</th>
+                            <th class="text-right" >`+numberWithCommas((parseInt(total) * parseFloat(response['komisi']) / 100 ))+`</th>
                             <td></td>
                         </tr>
                         `)

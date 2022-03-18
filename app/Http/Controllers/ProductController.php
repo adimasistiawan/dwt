@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisProduk;
 use App\Models\Place;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -18,11 +19,12 @@ class ProductController extends Controller
     public function index()
     {
         $tempat_wisata = Place::where('is_delete',0)->get();
-        return view('produk.index',compact('tempat_wisata'));
+        $jenis_produk = JenisProduk::where('is_delete',0)->get();
+        return view('produk.index',compact('tempat_wisata','jenis_produk'));
     }
 
     public function data(Request $request){
-        $data = Product::where('is_delete',0)->orderBy('created_at','desc')->with('place');
+        $data = Product::orderBy('created_at','desc')->with('place');
         return DataTables::of($data)
         ->addIndexColumn()
         ->addColumn('tempat', function($row){
@@ -34,16 +36,46 @@ class ProductController extends Controller
         ->editColumn('komisi', function($row){
             return $row->komisi."%";
         })
+        ->editColumn('is_delete', function($row){
+            if($row->is_delete == 0){
+                return "<span class='badge bg-success'>Aktif</span>";
+            }else{
+                return "<span class='badge bg-danger'>Non Aktif</span>";
+            }
+        })
         ->addColumn('action', function($row){
          
-            $btn = '<div class="btn btn-danger btn-sm btn-delete mr-2 waves-effect" data-id="'.$row->id.'">
-            <i class="fa fa-trash"></i> Hapus
-        </div> &nbsp;';
+            if($row->is_delete == 0){
+                $btn = '<div class="btn btn-danger btn-sm btn-delete mr-2 waves-effect" data-id="'.$row->id.'">
+                Non Aktifkan
+            </div> &nbsp;';
+            }else{
+                $btn = '<div class="btn btn-success btn-sm btn-delete mr-2 waves-effect" data-id="'.$row->id.'">
+                Aktifkan
+            </div> &nbsp;';
+            }
             $btn .= '<div class="btn btn-warning btn-sm edit mr-2 waves-effect" data-id="'.$row->id.'"  data-toggle="modal"><i class="fa fa-edit"></i> Ubah</div>';
             return $btn;
         })
+        ->filter(function ($instance) use ($request) {
        
-        ->rawColumns(['action','tempat'])
+            if ($request->get('place_id')) {
+                $instance->where('place_id', $request->get('place_id'));
+            }
+            if (!empty($request->get('search'))) {
+                $instance->where(function($w) use($request){
+                   $search = $request->get('search');
+                   $w->orWhere('nama', 'LIKE', "%$search%")
+                   ->orWhereHas('place', function($q) use($search){
+                     $q->where('nama', 'LIKE', "%$search%");
+                   })
+                  ->orWhere('harga', 'LIKE', "%$search%")
+                  ->orWhere('komisi', 'LIKE', "%$search%");
+               });
+            }
+        })
+       
+        ->rawColumns(['action','tempat','is_delete'])
         ->make(true);
     }
 
@@ -130,7 +162,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $data = Product::find($id);
-        $data->is_delete = 1;
+        $data->is_delete =  $data->is_delete == 1?0:1;
         $data->save();
         Session::flash('success', 'Berhasil'); 
         return 1;

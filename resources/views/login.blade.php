@@ -28,13 +28,25 @@
                 <div class="card-body">
 
                     <div class="auth-logo">
-                        <h3 class="text-center">
-                            <a href="index.html" class="logo d-block mt-4">
-                                <h3>Unit Desa Wisata Taro | POST</h3>
-                            </a>
-                            {{-- <b style="font-size: 14px;">Exellent Notary System</b> --}}
-                        </h3>
+                        <div class="row text-center ">
+                            <div class="col-4 justify-content-center align-self-center">
+                                <img src="{{asset(getSettings('logo'))}}" width="90px" height="50px" alt="" class="img-fluid">
+                            </div>
+                            <div class="col-4">
+                                <img src="{{asset('logo-apm.jpeg')}}" width="80px" height="80px" alt="" class="img-fluid">
+                            </div>
+                            <div class="col-4">
+                                <img src="{{asset('logo-ppb.png')}}" width="80px" height="80px" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                       
                     </div>
+                    <h3 class="text-center mt-4">
+                        <a href="index.html" class="logo d-block mt-4">
+                            <h3>Unit Desa Wisata Taro | POST</h3>
+                        </a>
+                        {{-- <b style="font-size: 14px;">Exellent Notary System</b> --}}
+                    </h3>
 
                     <div class="p-3">
                         {{-- <h4 class="text-muted font-size-18 text-center">Selamat Datang</h4> --}}
@@ -71,7 +83,7 @@
             <div class="text-center">
                 <p class="text-muted">
                     ©
-                    <script>document.write(new Date().getFullYear())</script> Unit Desa Wisata Taro. 
+                    <script>document.write(new Date().getFullYear())</script> Unit Desa Wisata Taro Developed by MAH B 2018 Poltekpar Bali  
                 </p>
             </div>
 

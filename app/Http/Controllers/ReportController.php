@@ -15,13 +15,13 @@ class ReportController extends Controller
 {
     public function invoice()
     {
-        $place = Place::where('is_delete',0)->orderBy('nama','desc')->get();
+        $place = Place::where('is_delete',0)->orderBy('created_at','asc')->get();
         return view('report.invoice', compact('place'));
     }
 
     public function invoice_data(Request $request)
     {
-        $produk = Product::where('is_delete',0)->orderBy('nama','desc')->where('place_id', $request->id)->get();
+        $produk = Product::orderBy('nama','desc')->where('place_id', $request->id)->get();
         foreach ($produk as $key => $value) {
             $data = PenjualanDetail::where('product_id', $value->id)->whereHas('penjualan', function($q) use ($request){
                 $q->whereMonth('tanggal',$request->bulan)->whereYear('tanggal', $request->tahun)->where('place_id', $request->id);
@@ -43,7 +43,7 @@ class ReportController extends Controller
 
     public function invoice_pdf($id, $tahun, $bulan)
     {
-        $produk = Product::where('is_delete',0)->orderBy('nama','desc')->where('place_id', $id)->get();
+        $produk = Product::orderBy('nama','desc')->where('place_id', $id)->get();
         foreach ($produk as $key => $value) {
             $data = PenjualanDetail::where('product_id', $value->id)->whereHas('penjualan', function($q) use ($id, $bulan, $tahun){
                 $q->whereMonth('tanggal',$bulan)->whereYear('tanggal', $tahun)->where('place_id', $id);
@@ -64,20 +64,69 @@ class ReportController extends Controller
         return $pdf->stream();
     }
 
+    public function kuitansi()
+    {
+        $place = Place::where('is_delete',0)->orderBy('created_at','asc')->get();
+        return view('report.kuitansi', compact('place'));
+    }
+
+    public function kuitansi_data(Request $request)
+    {
+        $produk = Product::orderBy('nama','desc')->where('place_id', $request->id)->get();
+        $total = 0;
+        foreach ($produk as $key => $value) {
+            $data = PenjualanDetail::where('product_id', $value->id)->whereHas('penjualan', function($q) use ($request){
+                $q->whereMonth('tanggal',$request->bulan)->whereYear('tanggal', $request->tahun)->where('place_id', $request->id);
+            });
+            if($data->count() > 0){
+                $value->pendapatan_desa_wisata = $data->sum('nominal_komisi');
+                $total +=  $value->pendapatan_desa_wisata;
+            }else{
+                unset($produk[$key]);
+            }
+        }
+
+        $no_invoice = Place::find($request->id)->kode_invoice.$request->tahun.str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
+        $no = Place::find($request->id)->kode_invoice.'/'.$request->tahun.'/'.str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
+        return['no_invoice' => $no_invoice, 'tempat_wisata'=> Place::find($request->id)->nama, 'total' => $total, 'no' => $no];
+    }
+
+    public function kuitansi_pdf($id, $tahun, $bulan, $tanggal)
+    {
+        $produk = Product::orderBy('nama','desc')->where('place_id', $id)->get();
+        $total = 0;
+        foreach ($produk as $key => $value) {
+            $data = PenjualanDetail::where('product_id', $value->id)->whereHas('penjualan', function($q) use ($id, $bulan, $tahun){
+                $q->whereMonth('tanggal',$bulan)->whereYear('tanggal', $tahun)->where('place_id', $id);
+            });
+            if($data->count() > 0){
+                $value->pendapatan_desa_wisata = $data->sum('nominal_komisi');
+                $total +=  $value->pendapatan_desa_wisata;
+            }else{
+                unset($produk[$key]);
+            }
+        }
+
+        $no_invoice = Place::find($id)->kode_invoice.$tahun.str_pad($bulan, 2, '0', STR_PAD_LEFT);
+        $no = Place::find($id)->kode_invoice.'/'.$tahun.'/'.str_pad($bulan, 2, '0', STR_PAD_LEFT);
+        $pdf =  PDF::loadView('pdf.kuitansi',['no_invoice' => $no_invoice, 'tempat_wisata'=> Place::find($id)->nama, 'total' => $total, 'no' => $no, 'tanggal'=>$tanggal])->setPaper('a4', 'portrait');
+        return $pdf->stream();
+    }
+
     public function perkiraan_pendapatan()
     {
-        $place = Place::where('is_delete',0)->orderBy('nama','desc')->get();
+        $place = Place::where('is_delete',0)->orderBy('created_at','asc')->get();
         return view('report.perkiraan_pendapatan', compact('place'));
     }
 
     public function perkiraan_pendapatan_data(Request $request)
     {
         if($request->id != "Semua"){
-            $place = Place::where('is_delete',0)->where('id', $request->id)->orderBy('nama','desc')->get();
+            $place = Place::where('id', $request->id)->orderBy('created_at','asc')->get();
             $tempat_wisata = $place[0]->nama;
         }
         else{
-            $place = Place::where('is_delete',0)->orderBy('nama','desc')->get();
+            $place = Place::orderBy('created_at','asc')->get();
             $tempat_wisata = "Semua";
         }
         
@@ -100,11 +149,11 @@ class ReportController extends Controller
     public function perkiraan_pendapatan_pdf($id, $dari, $sampai)
     {
         if($id != "Semua"){
-            $place = Place::where('is_delete',0)->where('id', $id)->orderBy('nama','desc')->get();
+            $place = Place::where('id', $id)->orderBy('created_at','asc')->get();
             $tempat_wisata = $place[0]->nama;
         }
         else{
-            $place = Place::where('is_delete',0)->orderBy('nama','desc')->get();
+            $place = Place::orderBy('created_at','asc')->get();
             $tempat_wisata = "Semua";
         }
         
@@ -127,18 +176,18 @@ class ReportController extends Controller
 
     public function rekapitulasi_pendapatan()
     {
-        $place = Place::where('is_delete',0)->orderBy('nama','desc')->get();
+        $place = Place::where('is_delete',0)->orderBy('created_at','asc')->get();
         return view('report.rekapitulasi_pendapatan', compact('place'));
     }
 
     public function rekapitulasi_pendapatan_data(Request $request)
     {
         if($request->id != "Semua"){
-            $place = Place::where('is_delete',0)->where('id', $request->id)->orderBy('nama','desc')->get();
+            $place = Place::where('id', $request->id)->orderBy('created_at','asc')->get();
             $tempat_wisata = $place[0]->nama;
         }
         else{
-            $place = Place::where('is_delete',0)->orderBy('nama','desc')->get();
+            $place = Place::orderBy('created_at','asc')->get();
             $tempat_wisata = "Semua";
         }
         
@@ -161,11 +210,11 @@ class ReportController extends Controller
     public function rekapitulasi_pendapatan_pdf($id, $dari, $sampai)
     {
         if($id != "Semua"){
-            $place = Place::where('is_delete',0)->where('id', $id)->orderBy('nama','desc')->get();
+            $place = Place::where('id', $id)->orderBy('created_at','asc')->get();
             $tempat_wisata = $place[0]->nama;
         }
         else{
-            $place = Place::where('is_delete',0)->orderBy('nama','desc')->get();
+            $place = Place::orderBy('created_at','asc')->get();
             $tempat_wisata = "Semua";
         }
         
@@ -194,7 +243,7 @@ class ReportController extends Controller
 
     public function produk()
     {
-        $place = Place::where('is_delete',0)->orderBy('nama','desc')->get();
+        $place = Place::where('is_delete',0)->orderBy('created_at','asc')->get();
         return view('report.produk', compact('place'));
     }
 

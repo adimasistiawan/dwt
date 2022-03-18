@@ -83,7 +83,7 @@
         <thead>
             <tr class="tr">
                 <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 5%;">No</td>
-                <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Deskripsi</td>
+                <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Rekanan Usaha</td>
                 <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Jumlah Pengunjung</td>
                 <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Pendapatan Objek Wisata</td>
                 <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Pendapatan Unit Desa Wisata</td>

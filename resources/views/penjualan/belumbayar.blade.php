@@ -1,6 +1,6 @@
 @extends('template')
 @section('title')
-    Penjualan
+    Penjualan Belum Bayar
 @endsection
 @section('css')
     
@@ -15,16 +15,11 @@
             <div class="col-12">
                 <div class="page-title-box d-flex align-items-center justify-content-between">
                     <div class="page-title">
-                        <h4 class="mb-0 font-size-18">Penjualan</h4>
+                        <h4 class="mb-0 font-size-18">Penjualan Belum Bayar</h4>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item "><a href="javascript: void(0);">Home</a></li>
-                            <li class="breadcrumb-item active">Penjualan</li>
+                            <li class="breadcrumb-item active">Penjualan Belum Bayar</li>
                         </ol>
-                    </div>
-                    <div class="state-informatio d-sm-block">
-                        @if(Auth::user()->role == 3)
-                        <a href="{{route('penjualan.create')}}" class="btn btn-primary waves-effect waves-light">Posting Penjualan</a>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -47,7 +42,6 @@
                                     <label for="">Sampai Tanggal</label>
                                     <input type="date" class="form-control" id="sampai">
                                 </div>
-                                @if(Auth::user()->role == 1)
                                 <div class="col-md-2">
                                     <label class="form-label">Rekanan Usaha</label>
                                     <select name="tempat_wisata" id="tempat_wisata" class="form-control select2-filter-search">
@@ -55,15 +49,6 @@
                                         @foreach ($place as $item)
                                         <option value="{{$item->id}}">{{$item->nama}}</option>
                                         @endforeach
-                                    </select>
-                                </div>
-                                @endif
-                                <div class="col-md-2">
-                                    <label class="form-label">Status</label>
-                                    <select name="status" id="status" class="form-control select2-filter">
-                                        <option value="">Semua</option>
-                                        <option value="0">Belum Dibayar</option>
-                                        <option value="1">Sudah Dibayar</option>
                                     </select>
                                 </div>
                             </div>
@@ -78,8 +63,8 @@
                                             <th class="text-center" width="50px">No</th>
                                             <th>Kode Penjualan</th>
                                             <th>Tanggal</th>
+                                            <th>Rekanan Usaha</th>
                                             <th>Total</th>
-                                            <th>Status</th>
                                             <th class="text-center"></th>
                                         </tr>
                                     </thead>
@@ -112,21 +97,20 @@
                 serverSide: true,
                 scrollX:true,
                 ajax: {
-                    url: "{{ route('penjualan.data') }}",
+                    url: "{{ route('penjualan.belum_bayar.data') }}",
                     data: function (d) {
                             d.dari = $('#dari').val(),
                             d.sampai = $('#sampai').val(),
                             d.search = $('input[type="search"]').val()
-                            d.tempat_wisata = $('#tempat_wisata').val(),
-                            d.status = $('#status').val()
+                            d.tempat_wisata = $('#tempat_wisata').val()
                         }
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                     {data: 'kode', name: 'kode'},
                     {data: 'tanggal', name: 'tanggal'},
+                    {data: 'tempat', name: 'tempat'},
                     {data: 'total', name: 'total'},
-                    {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', orderable: false, searchable: false, width: '20%'},
                 ],
                 columnDefs:[
@@ -147,45 +131,6 @@
             $('#tempat_wisata').change(function(){
                 table.draw();
             });
-            $('#status').change(function(){
-                table.draw();
-            });
-            
-
-
-            $(document).on('click','.edit',function(){
-               
-                $('.loading').removeAttr('hidden')
-                var id = $(this).attr('data-id');
-                url = '{{route("penjualan.edit",":id")}}';
-                url = url.replace(':id', id);
-                _token = $('input[name=_token]').val();
-                $.ajax({
-                    type: 'GET',
-                    dataType: 'json',
-                    url: url,
-                })
-                .done(function(response) {
-                    console.log(response)
-                    $('#id').val(response.id)
-                    $('#product_id').val(response.product_id).trigger('change')
-                    $('#harga').val(response.harga)
-                    $('#qty').val(response.qty)
-                    $('#total').val(response.total)
-                    $('#tanggal').val(response.tanggal)
-                    $('#keterangan').val(response.keterangan)
-                    $('#myModal2').modal('show');
-                    
-                })
-                .fail(function(){
-                    $.alert("error");
-                    return;
-                })
-                .always(function() {
-                    $('.loading').attr('hidden',true)
-                    console.log("complete");
-                });
-            })
 
             $(document).on('click','.btn-change-all',function(){
                 var id = $(this).attr('data-id')
@@ -209,7 +154,7 @@
                             type: 'post',
                             success: function(resp){
                                 if(resp == 1){
-                                    window.location = '{{route("penjualan.index")}}';
+                                    window.location = '{{route("penjualan.belum_bayar")}}';
                                 }
                             }
                         });
@@ -240,7 +185,7 @@
                             type: 'post',
                             success: function(resp){
                                 if(resp == 1){
-                                    window.location = '{{route("penjualan.index")}}';
+                                    window.location = '{{route("penjualan.belum_bayar")}}';
                                 }
                             }
                         });

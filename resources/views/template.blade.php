@@ -4,7 +4,7 @@
     <head>
 
         <meta charset="utf-8" />
-        <title>@yield('title') | Sistem Informasi Penjualan</title>
+        <title>@yield('title') | Unit Desa Wisata Taro </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- App favicon -->
         {{-- <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico"> --}}
@@ -181,7 +181,7 @@
             <div class="navbar-brand-box">
                 <a href="#" class="logo logo-dark mt-4">
                     <span class="logo-sm">
-                        <h2>SIP</h2>
+                        <h2>POST</h2>
                     </span>
                     <span class="logo-lg">
                         <img src="{{asset(getSettings('logo'))}}" width="150px" height="50px" alt="">
@@ -190,7 +190,7 @@
 
                 <a href="#" class="logo logo-light mt-4">
                     <span class="logo-sm">
-                        <h4>SIP</h4>
+                        <h4>POST</h4>
                     </span>
                     <span class="logo-lg">
                         <img src="{{asset(getSettings('logo'))}}" width="200px" height="50px" alt="">
@@ -246,16 +246,61 @@
                         <!-- Left Menu Start -->
                         <ul class="metismenu list-unstyled" id="side-menu">
                             <li class="menu-title">Menu</li>
+                            @if (Auth::user()->role == 1)
                             <li>
-                                <a href="{{route('dashboard')}}" class="waves-effect">
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-database"></i>
+                                    <span>Master Data</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{{route('jenis-usaha.index')}}">Jenis Usaha</a></li>
+                                    <li><a href="{{route('rekanan-usaha.index')}}">Rekanan Usaha</a></li>
+                                    <li><a href="{{route('user.index')}}">User</a></li>
+                                    <li><a href="{{route('jenis-produk.index')}}">Jenis Produk</a></li>
+                                    <li><a href="{{route('produk.index')}}">Produk</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="{{route('beranda')}}" class="waves-effect">
                                     <i class="mdi mdi-home"></i>
-                                    <span>Dashboard</span>
+                                    <span>Beranda</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="@if(Auth::user()->role == 2) javascript: void(0); @else {{route('penjualan.index')}} @endif " class="waves-effect @if(Auth::user()->role == 2) block-page @endif">
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
                                     <i class="mdi mdi-sale"></i>
-                                    <span>Penjualan</span>
+                                    <span>Transaksi</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{{route('report.invoice')}}">Invoice</a></li>
+                                    <li><a href="{{route('penjualan.belum_bayar')}}">Penjualan Belum Bayar</a></li>
+                                    <li><a href="{{route('penjualan.sudah_bayar')}}">Penjualan Sudah Bayar</a></li>
+                                    <li><a href="{{route('report.kuitansi')}}">Kuitansi</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-book-edit"></i>
+                                    <span>Laporan</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{{route('report.produk')}}">Produk</a></li>
+                                    <li><a href="{{route('report.perkiraan_pendapatan')}}">Perkiraan Pendapatan</a></li>
+                                    <li><a href="{{route('report.rekapitulasi_pendapatan')}}">Rekapitulasi Pendapatan</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="{{route('pengaturan')}}" class="waves-effect">
+                                    <i class="fa fa-cog"></i>
+                                    <span>Pengaturan</span>
+                                </a>
+                            </li>
+
+                            @elseif(Auth::user()->role == 2)
+                            <li>
+                                <a href="{{route('beranda')}}" class="waves-effect">
+                                    <i class="mdi mdi-home"></i>
+                                    <span>Beranda</span>
                                 </a>
                             </li>
                             <li>
@@ -264,29 +309,27 @@
                                     <span>Laporan</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="@if(Auth::user()->role == 3) javascript: void(0); @else {{route('report.produk')}} @endif" class="waves-effect @if(Auth::user()->role == 3) block-page @endif">Produk</a></li>
-                                    <li><a href="@if(Auth::user()->role == 3) javascript: void(0); @else {{route('report.invoice')}} @endif" class="waves-effect @if(Auth::user()->role == 3) block-page @endif">Invoice</a></li>
-                                    <li><a href="@if(Auth::user()->role == 3) javascript: void(0); @else {{route('report.perkiraan_pendapatan')}} @endif" class="waves-effect @if(Auth::user()->role == 3) block-page @endif">Perkiraan Pendapatan</a></li>
-                                    <li><a href="@if(Auth::user()->role == 3) javascript: void(0); @else {{route('report.rekapitulasi_pendapatan')}} @endif" class="waves-effect @if(Auth::user()->role == 3) block-page @endif">Rekapitulasi Pendapatan</a></li>
+                                    <li><a href="{{route('report.produk')}}">Produk</a></li>
+                                    <li><a href="{{route('report.perkiraan_pendapatan')}}">Perkiraan Pendapatan</a></li>
+                                    <li><a href="{{route('report.rekapitulasi_pendapatan')}}">Rekapitulasi Pendapatan</a></li>
                                 </ul>
                             </li>
+
+                            @elseif(Auth::user()->role == 3)
                             <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="mdi mdi-database"></i>
-                                    <span>Master Data</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a class="@if(Auth::user()->role != 1) block-page @endif" href="@if(Auth::user()->role == 1) {{route('produk.index')}}  @else javascript: void(0); @endif ">Produk</a></li>
-                                    <li><a class="@if(Auth::user()->role != 1) block-page @endif" href="@if(Auth::user()->role == 1) {{route('tempat-wisata.index')}}  @else javascript: void(0); @endif">Tempat Wisata</a></li>
-                                    <li><a class="@if(Auth::user()->role != 1) block-page @endif" href="@if(Auth::user()->role == 1) {{route('user.index')}}  @else javascript: void(0); @endif">User</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="@if(Auth::user()->role == 1) {{route('pengaturan')}}  @else javascript: void(0); @endif" class="waves-effect @if(Auth::user()->role != 1) block-page @endif">
-                                    <i class="fa fa-cog"></i>
-                                    <span>Pengaturan</span>
+                                <a href="{{route('beranda')}}" class="waves-effect">
+                                    <i class="mdi mdi-home"></i>
+                                    <span>Beranda</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{route('penjualan.index')}}" class="waves-effect">
+                                    <i class="mdi mdi-sale"></i>
+                                    <span>Penjualan</span>
+                                </a>
+                            </li>
+                            @endif
+                         
                         </ul>
                     </div>
                     <!-- Sidebar -->
@@ -302,7 +345,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-12 text-center">
-                                <script>document.write(new Date().getFullYear())</script> © Unit Desa Wisata Taro | POST <span
+                                ©<script>document.write(new Date().getFullYear())</script>  Unit Desa Wisata Taro Developed by MAH B 2018 Poltekpar Bali  <span
                                     class="d-none d-sm-inline-block">
                                     {{-- - Crafted with <i class="mdi mdi-heart text-primary"></i> by
                                     Themesbrand.</span> --}}

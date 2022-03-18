@@ -21,10 +21,7 @@
                             <li class="breadcrumb-item active">Pengaturan</li>
                         </ol>
                     </div>
-                    <div class="state-informatio d-sm-block">
-                        <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#myModal">Tambah</button>
-                        
-                    </div>
+                    
                 </div>
             </div>
         </div>

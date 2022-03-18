@@ -1,6 +1,6 @@
 @extends('template')
 @section('title')
-    Produk
+    Jenis Usaha
 @endsection
 @section('css')
     
@@ -15,10 +15,10 @@
             <div class="col-12">
                 <div class="page-title-box d-flex align-items-center justify-content-between">
                     <div class="page-title">
-                        <h4 class="mb-0 font-size-18">Produk</h4>
+                        <h4 class="mb-0 font-size-18">Jenis Usaha</h4>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item "><a href="javascript: void(0);">Home</a></li>
-                            <li class="breadcrumb-item active">Produk</li>
+                            <li class="breadcrumb-item active">Jenis Usaha</li>
                         </ol>
                     </div>
                     <div class="state-informatio d-sm-block">
@@ -36,29 +36,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Produk</h4>
-                            <div class="row mt-4">
-                                <div class="col-md-2">
-                                    <label class="form-label">Rekanan Usaha</label>
-                                    <select name="tempat" id="tempat" class="form-control select2-filter-search">
-                                        <option value="">Semua</option>
-                                        @foreach ($tempat_wisata as $item)
-                                        <option value="{{$item->id}}">{{$item->nama}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+                            <h4 class="card-title">Jenis Usaha</h4>
                             <div class="table-responsive mt-4">
                                 <table id="datatable-server" class="table table-bordered  nowrap"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
                                             <th class="text-center" width="50px">No</th>
-                                            <th>Rekanan Usaha</th>
-                                            <th>Jenis Produk</th>
                                             <th>Nama</th>
-                                            <th>Harga</th>
-                                            <th>Komisi</th>
                                             <th>Status</th>
                                             <th class="text-center"></th>
                                         </tr>
@@ -84,52 +69,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Tambah Produk
+                    <h5 class="modal-title" id="myModalLabel">Tambah Jenis Usaha
                     </h5>
                     <button type="button" class="btn-close"
                         data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{route('produk.store')}}">
+                    <form method="post" action="{{route('jenis-usaha.store')}}">
                         @csrf
-                        <div class="form-group mb-3">
-                            <label class="form-label">Rekanan Usaha</label>
-                            <select name="place_id" id="" class="form-control select2">
-                                <option value=""></option>
-                                @foreach ($tempat_wisata as $item)
-                                <option value="{{$item->id}}">{{$item->nama}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Jenis Produk</label>
-                            <select name="jenis" id="" class="form-control select2">
-                                <option value=""></option>
-                                @foreach ($jenis_produk as $item)
-                                <option value="{{$item->nama}}">{{$item->nama}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                     
                         <div class="form-group mb-3">
                             <label class="form-label">Nama</label>
                             <input type="text" class="form-control"  name="nama" required>
                         </div>
-                     
-                        <div class="form-group mb-3">
-                            <label class="form-label">Harga</label>
-                            <input type="number" class="form-control"  name="harga" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label"  for="validationTooltipUsername">Komisi</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" step="any" name="komisi" required>
-                                <div class="input-group-append">
-                                    <span class="input-group-text"
-                                        id="validationTooltipUsernamePrepend">%</span>
-                                </div>
-                            </div>
-                        </div>
-                   
+                       
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary waves-effect">Simpan</button>
                     </div>
@@ -145,53 +98,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Ubah Produk
+                    <h5 class="modal-title" id="myModalLabel">Ubah Jenis Usaha
                     </h5>
                     <button type="button" class="btn-close"
                         data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{route('produk.store')}}">
+                    <form method="post" action="{{route('jenis-usaha.store')}}">
                         @csrf
                         <input type="hidden" name="id" id="id">
-                        <div class="form-group mb-3">
-                            <label class="form-label">Rekanan Usaha</label>
-                            <select name="place_id" id="place_id" class="form-control select2">
-                                <option value=""></option>
-                                @foreach ($tempat_wisata as $item)
-                                <option value="{{$item->id}}">{{$item->nama}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Jenis Produk</label>
-                            <select name="jenis" id="jenis" class="form-control select2">
-                                <option value=""></option>
-                                @foreach ($jenis_produk as $item)
-                                <option value="{{$item->nama}}">{{$item->nama}}</option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="form-group mb-3">
                             <label class="form-label">Nama</label>
                             <input type="text" class="form-control" id="nama" name="nama" required>
                         </div>
                       
-                        <div class="form-group mb-3">
-                            <label class="form-label">Harga</label>
-                            <input type="number" class="form-control" id="harga" name="harga" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label" for="validationTooltipUsername">Komisi</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control"  step="any" id="komisi" name="komisi" required>
-                                <div class="input-group-append">
-                                    <span class="input-group-text"
-                                        id="validationTooltipUsernamePrepend">%</span>
-                                </div>
-                            </div>
-                        </div>
-                    
                        
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary waves-effect">Simpan</button>
@@ -213,22 +133,12 @@
                 processing: true,
                 serverSide: true,
                 scrollX:true,
-                ajax: {
-                    url: "{{ route('produk.data') }}",
-                    data: function (d) {
-                            d.search = $('input[type="search"]').val(),
-                            d.place_id = $('#tempat').val()
-                        }
-                },
+                ajax: "{{ route('jenis-usaha.data') }}",
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-                    {data: 'tempat', name: 'tempat'},
-                    {data: 'jenis', name: 'jenis'},
                     {data: 'nama', name: 'nama'},
-                    {data: 'harga', name: 'harga'},
-                    {data: 'komisi', name: 'komisi'},
                     {data: 'is_delete', name: 'is_delete'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false, width: '20%'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false, width: '30%'},
                 ],
                 columnDefs:[
                     {
@@ -238,7 +148,7 @@
                     
                 ]
             });
-            $('#tempat').change(function(){
+            $('.status').change(function(){
                 table.draw();
             });
 
@@ -246,7 +156,7 @@
                
                 $('.loading').removeAttr('hidden')
                 var id = $(this).attr('data-id');
-                url = '{{route("produk.edit",":id")}}';
+                url = '{{route("jenis-usaha.edit",":id")}}';
                 url = url.replace(':id', id);
                 _token = $('input[name=_token]').val();
                 $.ajax({
@@ -258,10 +168,6 @@
                     console.log(response)
                     $('#id').val(response.id)
                     $('#nama').val(response.nama)
-                    $('#jenis').val(response.jenis).trigger('change')
-                    $('#harga').val(response.harga)
-                    $('#komisi').val(response.komisi)
-                    $('#place_id').val(response.place_id).trigger('change')
                     $('#myModal2').modal('show');
                     
                 })
@@ -277,7 +183,7 @@
         })
         $(document).on('click','.btn-delete',function(){
                 var id = $(this).attr('data-id')
-                var url = "{{route('produk.destroy',':id')}}";
+                var url = "{{route('jenis-usaha.destroy',':id')}}";
                 url = url.replace(':id',id)
                 _token = $('input[name=_token]').val();
                 Swal.fire({
@@ -299,7 +205,7 @@
                             success: function(resp){
                                 console.log(resp)
                                 if(resp == 1){
-                                    window.location = '{{route("produk.index")}}';
+                                    window.location = '{{route("jenis-usaha.index")}}';
                                 }
                             }
                         });

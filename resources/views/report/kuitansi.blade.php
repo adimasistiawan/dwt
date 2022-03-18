@@ -1,6 +1,6 @@
 @extends('template')
 @section('title')
-    Invoice
+    Kuitansi
 @endsection
 @section('css')
     
@@ -15,11 +15,11 @@
             <div class="col-12">
                 <div class="page-title-box d-flex align-items-center justify-content-between">
                     <div class="page-title">
-                        <h4 class="mb-0 font-size-18">Invoice</h4>
+                        <h4 class="mb-0 font-size-18">Kuitansi</h4>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item "><a href="javascript: void(0);">Home</a></li>
                             <li class="breadcrumb-item">Laporan</li>
-                            <li class="breadcrumb-item active">Invoice</li>
+                            <li class="breadcrumb-item active">Kuitansi</li>
                         </ol>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Invoice</h4>
+                            <h4 class="card-title">Kuitansi</h4>
                             <div class="row mt-4">
                                 <div class="col-md-2">
                                     <label for="">Bulan</label>
@@ -76,36 +76,52 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="col-md-2">
+                                    <label class="form-label">Tanggal Bayar</label>
+                                    <input type="date" name="tanggal_bayar" id="tanggal" class="form-control">
+                                </div>
                             </div>
                             <button class="btn btn-info search mt-2">Lihat</button>
                             <div class="mt-4 report" hidden>
                                 <div class="export">
                                     
                                 </div>
-                                <div class="table-responsive mt-1 report-table" style="font-size: 11px;" hidden>
-                                    <div class="w-100 text-center">
+                                <div  style="padding-left:100px; padding-right:100px;">
 
-                                        <b><u>INVOICE</u></b> 
+                                    <div class="table-responsive mt-3 report-table" style="font-size: 16px; border:1px solid #000000; padding-left:100px;  padding-right:100px;" hidden>
+                                        <div class="w-100 text-center" style=" padding-top:50px; ">
+    
+                                            <b><u>KUITANSI</u></b> 
+                                            <br>
+                                            <span>NO : <span class="no"></span></span>
+                                        </div>
+                                        <span class="tanggal float-end"></span>
                                         <br>
-                                        <span>NO : <span class="no_invoice"></span></span>
+                                        <br>
+                                        <div style=" padding-bottom:50px;">
+                                            <table>
+                                                <tr>
+                                                    <td><b>Telah Diterima Dari</b></td>
+                                                    <td width="30px" align="center">:</td>
+                                                    <td><span class="dari"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Sejumlah Uang</b></td>
+                                                    <td width="30px" align="center">:</td>
+                                                    <td><span class="total"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Untuk Pembayaran</b></td>
+                                                    <td width="30px" align="center">:</td>
+                                                    <td><span class="no_invoice"></span></td>
+                                                </tr>
+                                            </table>
+                                            {{-- <b>Telah Diterima Dari : <span class="dari"></span></b><br>
+                                            <b>Sejumlah Uang : <span class="total"></span></b><br>
+                                            <b>Untuk Pembayaran : <span class="no_invoice"></span></b> --}}
+                                        </div>
+                                       
                                     </div>
-                                    <b>Rekanan Usaha : <span class="tempat_wisata"></span></b><br>
-                                    <b>Tahun : <span class="tahun"></span></b><br>
-                                    <b>Bulan : <span class="bulan"></span></b>
-                                    <table class="table table-bordered" style="width: 100%; border-collapse: collapse;" >
-                                        <thead>
-                                            <th class="text-center">Keterangan</th>
-                                            <th class="text-center">Harga</th>
-                                            <th class="text-center">Jumlah Penjualan</th>
-                                            <th class="text-center">Total Pendapatan</th>
-                                            <th class="text-center">Komisi Desa Wisata</th>
-                                            <th class="text-center">Pendapatan Objek Wisata</th>
-                                            <th class="text-center">Pendapatan Desa Wisata</th>
-                                        </thead>
-                                        <tbody class="tbody">
-
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
 
@@ -143,64 +159,35 @@
                 $('.tbody').empty();
                 $('.report').removeAttr('hidden')
                 $('.report-table').attr('hidden',false)
-                var urls='{{route('report.invoice.data')}}';
+                var urls='{{route('report.kuitansi.data')}}';
                 _token = $('input[name=_token]').val();
                 var id = $('#tempat_wisata').val()
                 var tahun = $('#tahun').val()
                 var bulan = $('#bulan').val()
-                var url = "{{route('report.invoice.pdf',['id' => ':id', 'tahun' => ':tahun', 'bulan' => ':bulan'])}}";
+                var tanggal = $('#tanggal').val()
+                var url = "{{route('report.kuitansi.pdf',['id' => ':id', 'tahun' => ':tahun', 'bulan' => ':bulan','tanggal'=>':tanggal'])}}";
                 url = url.replace(':id', id);
                 url = url.replace(':tahun', tahun);
                 url = url.replace(':bulan', bulan);
+                url = url.replace(':tanggal', tanggal);
                 $('.export').append(
                     `<a class="btn btn-primary" href="`+url+`" target="blank"> Cetak</a>`
                 )
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
-                    data: {_token:_token, id:id, tahun:tahun, bulan:bulan},
+                    data: {_token:_token, id:id, tahun:tahun, bulan:bulan, tanggal:tanggal},
                     url: urls,
                 })
                 .done(function(response) {
-                $('.no_invoice').text(response['no_invoice'])
-                $('.tempat_wisata').text(response['tempat_wisata'])
-                $('.tahun').text(response['tahun'])
-                $('.bulan').text(response['bulan'])
-                if(response['penjualan'].length != 0){
                     console.log(response)
-                    let total = 0
-                    $.each(response['penjualan'],function(k,value){
-                        
-                        $('.tbody').append(`
-                        <tr>
-                            <td class="text-left">`+value.nama+`</td>
-                            <td class="text-right">`+numberWithCommas(value.harga)+`</td>
-                            <td class="text-right">`+numberWithCommas(value.jumlah_penjualan)+`</td>
-                            <td class="text-right">`+numberWithCommas(value.total_pendapatan)+`</td>
-                            <td class="text-right">`+numberWithCommas(value.komisi)+`%</td>
-                            <td class="text-right">`+numberWithCommas(value.pendapatan_objek_wisata)+`</td>
-                            <td class="text-right">`+numberWithCommas(value.pendapatan_desa_wisata)+`</td>
-                        </tr>
-                        `)
-                        total+=value.pendapatan_desa_wisata
-                    });
-                    $('.tbody').append(`
-                        <tr>
-                            <th class="text-right" colspan="6">Total</th>
-                            <th class="text-right">`+numberWithCommas(total)+`</th>
-                        </tr>
-                        `)
+                    $('.no_invoice').text(response['no_invoice'])
+                    $('.no').text(response['no'])
+                    $('.dari').text(response['tempat_wisata'])
+                    $('.total').text(numberWithCommas(response['total']))
+                    $('.tanggal').text(moment(tanggal).format("DD-MM-YYYY"))
+
                     $('.loading').attr('hidden',true)
-                }
-                else{
-                    $('.tbody').append(`
-                    <tr>
-                        <td colspan="6" class="text-center">Tidak ada</td>
-                        
-                    </tr>
-                    `)
-                }
-                $('.loading').attr('hidden',true)
                 })
                 
             })

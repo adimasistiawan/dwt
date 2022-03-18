@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JenisUsaha;
-use App\Models\Place;
+use App\Models\JenisProduk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
-class PlaceController extends Controller
+class JenisProdukController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,12 +16,11 @@ class PlaceController extends Controller
      */
     public function index()
     {
-        $jenis_usaha = JenisUsaha::where('is_delete',0)->get();
-        return view('tempat.index',compact('jenis_usaha'));
+        return view('jenisproduk.index');
     }
 
     public function data(Request $request){
-        $data = Place::orderBy('created_at','asc');
+        $data = JenisProduk::orderBy('created_at','desc');
         return DataTables::of($data)
         ->addIndexColumn()
         ->editColumn('is_delete', function($row){
@@ -69,24 +67,13 @@ class PlaceController extends Controller
     public function store(Request $request)
     {
         if(!$request->id){
-            $check = Place::where('kode_invoice', $request->kode_invoice)->count();
-            if($check > 0){
-                return redirect()->back()->with('error','Kode invoice sudah dipakai di tempat lain, silahkan pakai kode lain');
-            }
-            $data = new Place();
+          
+            $data = new JenisProduk();
             $data->nama = $request->nama;
-            $data->jenis_usaha = $request->jenis_usaha;
-            $data->kode_invoice = $request->kode_invoice;
             $data->save();
         }else{
-            $data = Place::find($request->id);
-            $check = Place::where('kode_invoice', $request->kode_invoice)->where('kode_invoice', '!=', $data->kode_invoice)->count();
-            if($check > 0){
-                return redirect()->back()->with('error','Kode invoice sudah dipakai di tempat lain, silahkan pakai kode lain');
-            }
+            $data = JenisProduk::find($request->id);
             $data->nama = $request->nama;
-            $data->jenis_usaha = $request->jenis_usaha;
-            $data->kode_invoice = $request->kode_invoice;
             $data->save();
         }
 
@@ -112,7 +99,7 @@ class PlaceController extends Controller
      */
     public function edit($id)
     {
-        $data = Place::find($id);
+        $data = JenisProduk::find($id);
         return $data;
     }
 
@@ -136,8 +123,8 @@ class PlaceController extends Controller
      */
     public function destroy($id)
     {
-        $data = Place::find($id);
-        $data->is_delete =  $data->is_delete == 1?0:1;
+        $data = JenisProduk::find($id);
+        $data->is_delete = $data->is_delete == 1?0:1;
         $data->save();
         Session::flash('success', 'Berhasil'); 
         return 1;

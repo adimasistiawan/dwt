@@ -105,6 +105,139 @@ class PenjualanController extends Controller
         ->make(true);
     }
 
+    public function penjualan_belum_bayar()
+    {
+        $place = Place::where('is_delete',0)->orderBy('nama','desc')->get();
+        $check = Penjualan::where('status',0)->count();
+        if($check > 0){
+            $btn = 1;
+        }else{
+            $btn = 0;
+        }
+        return view('penjualan.belumbayar', compact('place', 'btn'));
+    }
+
+    public function penjualan_belum_bayar_data(Request $request){
+        $data = Penjualan::where('status',0)->orderBy('created_at','desc')->with('place');
+    
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('tempat', function($row){
+            return $row->place->nama;
+        })
+        ->editColumn('total', function($row){
+            return number_format($row->total , 0, ',', '.');
+        })
+        ->editColumn('tanggal', function($row){
+            return date('d-m-Y', strtotime($row->tanggal));
+        })
+        ->editColumn('status', function($row){
+            if($row->status == 1){
+                return "<span class='badge bg-success'>Sudah Dibayar</span>";
+            }else{
+                return "<span class='badge bg-danger'>Belum Dibayar</span>";
+            }
+        })
+        // ->editColumn('kode', function($row){
+        //     return $row->place->kode_invoice.$row->kode;
+        // })
+        ->addColumn('action', function($row){
+            $btn = '<a href="'.route('penjualan.show', $row->id).'" class="btn btn-success btn-sm mr-2 waves-effect"><i class="fa fa-search"></i> Lihat</a> &nbsp;';
+            if($row->status == 0){
+                $btn .= '<div class="btn btn-info btn-sm mr-2 btn-change-status waves-effect"  data-id="'.$row->id.'"><i class="fa fa-check"></i> Sudah Dibayar</div> &nbsp;';
+            }
+        
+            return $btn;
+        })
+
+        ->filter(function ($instance) use ($request) {
+            if ($request->get('dari') && $request->get('sampai')) {
+                $instance->whereDate('tanggal', '>=', $request->get('dari'))->whereDate('tanggal', '<=', $request->get('sampai'));
+            }
+            if ($request->get('tempat_wisata')) {
+                $instance->where('place_id', $request->get('tempat_wisata'));
+            }
+            if ($request->get('status')) {
+                $instance->where('status', $request->get('status'));
+            }
+            if (!empty($request->get('search'))) {
+                $instance->where(function($w) use($request){
+                   $search = $request->get('search');
+                   $w->orWhere('kode', 'LIKE', "%$search%")
+                   ->orWhereHas('place', function($q) use($search){
+                     $q->where('nama', 'LIKE', "%$search%");
+                   })
+                  ->orWhere('total', 'LIKE', "%$search%");
+               });
+            }
+        })
+       
+        ->rawColumns(['action','tempat','status'])
+        ->make(true);
+    }
+
+    public function penjualan_sudah_bayar()
+    {
+        $place = Place::where('is_delete',0)->orderBy('nama','desc')->get();
+        return view('penjualan.sudahbayar', compact('place'));
+    }
+
+    public function penjualan_sudah_bayar_data(Request $request){
+        $data = Penjualan::where('status',1)->orderBy('created_at','desc')->with('place');
+    
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('tempat', function($row){
+            return $row->place->nama;
+        })
+        ->editColumn('total', function($row){
+            return number_format($row->total , 0, ',', '.');
+        })
+        ->editColumn('tanggal', function($row){
+            return date('d-m-Y', strtotime($row->tanggal));
+        })
+        ->editColumn('status', function($row){
+            if($row->status == 1){
+                return "<span class='badge bg-success'>Sudah Dibayar</span>";
+            }else{
+                return "<span class='badge bg-danger'>Belum Dibayar</span>";
+            }
+        })
+        // ->editColumn('kode', function($row){
+        //     return $row->place->kode_invoice.$row->kode;
+        // })
+        ->addColumn('action', function($row){
+            $btn = '<a href="'.route('penjualan.show', $row->id).'" class="btn btn-success btn-sm mr-2 waves-effect"><i class="fa fa-search"></i> Lihat</a> &nbsp;';
+        
+            return $btn;
+        })
+
+        ->filter(function ($instance) use ($request) {
+            if ($request->get('dari') && $request->get('sampai')) {
+                $instance->whereDate('tanggal', '>=', $request->get('dari'))->whereDate('tanggal', '<=', $request->get('sampai'));
+            }
+            if ($request->get('tempat_wisata')) {
+                $instance->where('place_id', $request->get('tempat_wisata'));
+            }
+            if ($request->get('status')) {
+                $instance->where('status', $request->get('status'));
+            }
+            if (!empty($request->get('search'))) {
+                $instance->where(function($w) use($request){
+                   $search = $request->get('search');
+                   $w->orWhere('kode', 'LIKE', "%$search%")
+                   ->orWhereHas('place', function($q) use($search){
+                     $q->where('nama', 'LIKE', "%$search%");
+                   })
+                  ->orWhere('total', 'LIKE', "%$search%");
+               });
+            }
+        })
+       
+        ->rawColumns(['action','tempat','status'])
+        ->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -185,6 +318,13 @@ class PenjualanController extends Controller
         return view('penjualan.show',compact('data'));
     }
 
+    public function struk($id)
+    {
+        $data = Penjualan::where('id', $id)->with('place','penjualan_detail.product')->first();
+        $pdf =  PDF::loadView('pdf.struk',['penjualan' => $data])->setPaper('a4', 'portrait');
+        return $pdf->stream();
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -222,14 +362,14 @@ class PenjualanController extends Controller
 
     public function change_status_all(Request $request)
     {
-        Penjualan::where('status',0)->update(['status' => 1]);
+        Penjualan::where('status',0)->update(['status' => 1, 'tanggal_bayar' => Carbon::now()]);
         Session::flash('success', 'Berhasil'); 
         return 1;
     }
 
     public function change_status($id)
     {
-        Penjualan::where('status',0)->where('id', $id)->where('place_id', Auth::user()->place_id)->update(['status' => 1]);
+        Penjualan::where('status',0)->where('id', $id)->update(['status' => 1, 'tanggal_bayar' => Carbon::now()]);
         Session::flash('success', 'Berhasil'); 
         return 1;
     }

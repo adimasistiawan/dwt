@@ -10,7 +10,7 @@ class Penjualan extends Model
     use HasFactory;
 
     protected $table = "penjualan";
-    protected $fillable = ['status'];
+    protected $fillable = ['status','tanggal_bayar'];
 
     public function place(){
         return $this->belongsTo(Place::class, 'place_id','id');

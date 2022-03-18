@@ -35,10 +35,13 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Detail Penjualan</h4>
+                            <h4 class="card-title mb-4">Detail Penjualan</h4>
+                            @if(Auth::user()->role == 3)
+                            <a href="{{route('penjualan.struk',$data->id)}}" target="blank" class="btn btn-primary mb-4">Cetak Struk</a>
+                            @endif
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="mb-4 mt-4">
+                                    <div class="mb-4">
                                         <h6>Kode Penjualan</h6>
                                         <span>{{$data->kode}}</span>
                                     </div>
@@ -47,7 +50,7 @@
                                         <span>{{date('d-m-Y', strtotime($data->tanggal))}}</span>
                                     </div>
                                     <div class="mb-4">
-                                        <h6>Tempat Wisata</h6>
+                                        <h6>Rekanan Usaha</h6>
                                         <span>{{$data->place->nama}}</span>
                                     </div>
                                 </div>
@@ -69,6 +72,14 @@
                                         <h6>Keterangan</h6>
                                         <span>{{$data->keterangan == null ? "-":$data->keterangan}}</span>
                                     </div>
+                                </div>
+                                <div class="col-md-4">
+                                    @if ($data->status == 1)
+                                    <div class="mb-4">
+                                        <h6>Tanggal Bayar</h6>
+                                        <span>{{date('d-m-Y', strtotime($data->tanggal_bayar))}}</span>
+                                    </div>
+                                    @endif
                                 </div>
                                 <div class="col-md-8">
                                     <div class="table-responsive">

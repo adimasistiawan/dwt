@@ -1,6 +1,6 @@
 @extends('template')
 @section('title')
-    Dashboard
+    Beranda
 @endsection
 @section('css')
     <style>
@@ -18,7 +18,7 @@
             <div class="col-12">
                 <div class="page-title-box d-flex align-items-center justify-content-between">
                     <div class="page-title">
-                        <h4 class="mb-0 font-size-18">Dashboard</h4>
+                        <h4 class="mb-0 font-size-18">Beranda</h4>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item active">Selamat Datang</li>
                         </ol>
@@ -108,7 +108,8 @@
                 <!-- End Col -->
                 @if (Auth::user()->role != 3)
                     
-                
+                @foreach ($jenis_produk as $item)
+                    
                 <div class="col-xl-4 col-md-12">
                     <div class="card bg-primary mini-stat position-relative">
                         <div class="card-body">
@@ -116,45 +117,15 @@
                                 <h5 class="text-uppercase verti-label font-size-16 text-white-50">
                                 </h5>
                                 <div class="text-white">
-                                    <h5 class="text-uppercase font-size-16 text-white-50">Tiket</h5>
-                                    <h3 class="mb-3 text-white tiket"></h3>
+                                    <h5 class="text-uppercase font-size-16 text-white-50">{{$item->nama}}</h5>
+                                    <h3 class="mb-3 text-white">{{number_format($item->total , 0, ',', '.')}}</h3>
                                     
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-md-12">
-                    <div class="card bg-primary mini-stat position-relative">
-                        <div class="card-body">
-                            <div class="mini-stat-desc">
-                                <h5 class="text-uppercase verti-label font-size-16 text-white-50">
-                                </h5>
-                                <div class="text-white">
-                                    <h5 class="text-uppercase font-size-16 text-white-50">Package</h5>
-                                    <h3 class="mb-3 text-white package"></h3>
-                                    
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-12">
-                    <div class="card bg-primary mini-stat position-relative">
-                        <div class="card-body">
-                            <div class="mini-stat-desc">
-                                <h5 class="text-uppercase verti-label font-size-16 text-white-50">
-                                </h5>
-                                <div class="text-white">
-                                    <h5 class="text-uppercase font-size-16 text-white-50">Akomodasi</h5>
-                                    <h3 class="mb-3 text-white akomodasi"></h3>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
                 <!-- End Col -->
             </div>
 
@@ -184,7 +155,7 @@
                             <div class="row">
                                 <div class="col-xl-8 border-end">
                                     <h4 class="card-title mb-4">Sales Report</h4>
-                                    <div id="morris-area-example" class="dashboard-charts morris-charts">
+                                    <div id="morris-area-example" class="Beranda-charts morris-charts">
                                     </div>
                                 </div>
                                 <!-- End Col -->
@@ -259,7 +230,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4">Sales Analytics</h4>
-                            <div id="morris-donut-example" class="dashboard-charts morris-charts"></div>
+                            <div id="morris-donut-example" class="Beranda-charts morris-charts"></div>
                         </div>
                     </div>
                     <!-- End Card -->
@@ -285,7 +256,7 @@
             getData()
            function getData(){
                 var val = $('#Filter').val()
-                urlsnya = '{{route('dashboard.filter')}}';
+                urlsnya = '{{route('beranda.filter')}}';
                 _token = $('input[name=_token]').val();
 
                 var date = [];

@@ -44,7 +44,7 @@
                                     <input type="date" class="form-control" id="sampai">
                                 </div>
                                 <div class="col-md-2">
-                                    <label class="form-label">Tempat Wisata</label>
+                                    <label class="form-label">Rekanan Usaha</label>
                                     <select name="tempat_wisata" id="tempat_wisata" class="form-control select2-filter">
                                         <option value="Semua">Semua</option>
                                         @foreach ($place as $item)
@@ -63,13 +63,13 @@
 
                                         <b><u>LAPORAN PERKIRAAN PENDAPATAN</u></b>
                                     </div>
-                                    <b>Tempat Wisata : <span class="tempat_wisata"></span></b><br>
+                                    <b>Rekanan Usaha : <span class="tempat_wisata"></span></b><br>
                                     <b>Dari Tanggal : <span class="dari"></span></b><br>
                                     <b>Sampai Tanggal : <span class="sampai"></span></b>
                                     <table class="table table-bordered" style="width: 100%; border-collapse: collapse;" >
                                         <thead>
                                             <th class="text-center" width="50px">No</th>
-                                            <th class="text-center">Deskripsi</th>
+                                            <th class="text-center">Rekanan Usaha</th>
                                             <th class="text-center">Jumlah Pengunjung</th>
                                             <th class="text-center">Pendapatan Objek Wisata</th>
                                             <th class="text-center">Pendapatan Unit Desa Wisata</th>
@@ -98,8 +98,7 @@
     <script>
         
         $(function(){
-            $('.select2-filter-search').select2({
-                placeholder:"Pilih"
+            $('.select2-filter').select2({
             })
 
             function numberWithCommas(x) {
@@ -107,6 +106,9 @@
             }
 
             $('.search').click(function(){
+                if($('#dari').val() == '' && $('#sampai').val() == ''){
+                    return false;
+                }
                 $('.export').empty();
                 $('.loading').removeAttr('hidden')
                 $('.tbody').empty();
@@ -145,18 +147,18 @@
                             <td class="text-left">`+no+`</td>
                             <td class="text-left">`+value.nama+`</td>
                             <td class="text-right">`+numberWithCommas(parseInt(value.jumlah_penjualan))+`</td>
-                            <td class="text-right">`+numberWithCommas(value.pendapatan_objek_wisata)+`</td>
-                            <td class="text-right">`+numberWithCommas(value.pendapatan_desa_wisata)+`</td>
+                            <td class="text-right">`+numberWithCommas(parseInt(value.pendapatan_objek_wisata))+`</td>
+                            <td class="text-right">`+numberWithCommas(parseInt(value.pendapatan_desa_wisata))+`</td>
                         </tr>
                         `)
-                        total+=value.pendapatan_desa_wisata
+                        total+=parseInt(value.pendapatan_desa_wisata)
                         no++
                        
                     });
                     $('.tbody').append(`
                         <tr>
                             <th class="text-right" colspan="4">Total</th>
-                            <th class="text-right">`+numberWithCommas(total)+`</th>
+                            <th class="text-right">`+numberWithCommas(parseInt(total))+`</th>
                         </tr>
                         `)
                     $('.loading').attr('hidden',true)

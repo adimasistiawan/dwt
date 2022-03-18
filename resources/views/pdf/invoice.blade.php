@@ -90,6 +90,7 @@
                 <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Harga</td>
                 <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Jumlah Penjualan</td>
                 <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Total Pendapatan</td>
+                <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Komisi Desa Wisata</td>
                 <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Pendapatan Objek Wisata</td>
                 <td class="td" style="text-align: center; font-family: 'CustomFontBold'; width: 15%;">Pendapatan Desa Wisata</td>
             </tr>
@@ -104,6 +105,7 @@
                     <td style="text-align: right; border: 1px solid #000;">{{ number_format($item->harga , 0, ',', '.') }}</td>
                     <td style="text-align: right; border: 1px solid #000;">{{ number_format($item->jumlah_penjualan , 0, ',', '.') }}</td>
                     <td style="text-align: right; border: 1px solid #000;">{{ number_format($item->total_pendapatan , 0, ',', '.') }}</td>
+                    <td style="text-align: right; border: 1px solid #000;">{{ $item->komisi}}%</td>
                     <td style="text-align: right; border: 1px solid #000;">{{ number_format($item->pendapatan_objek_wisata , 0, ',', '.') }}</td>
                     <td style="text-align: right; border: 1px solid #000;">{{ number_format($item->pendapatan_desa_wisata , 0, ',', '.') }}</td>
                 </tr>
@@ -114,7 +116,7 @@
         </tbody>
         <tfoot>
             <tr class="tr">
-                <td class="td" colspan="5" style="text-align: right; font-family: 'CustomFontBold';">Total Tagihan</td>
+                <td class="td" colspan="6" style="text-align: right; font-family: 'CustomFontBold';">Total Tagihan</td>
                 <td class="td" style="text-align: right; font-family: 'CustomFontBold';">{{number_format($total , 0, ',', '.')}}</td>
             </tr>
         </tfoot>

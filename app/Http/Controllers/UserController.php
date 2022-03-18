@@ -13,12 +13,12 @@ class UserController extends Controller
 {
     public function index()
     {
-        $tempat = Place::where('is_delete',0)->get();
+        $tempat = Place::where('is_delete',0)->orderBy('created_at', 'asc')->get();
         return view('user.index',compact('tempat'));
     }
 
     public function data(Request $request){
-        $data = User::where('is_delete',0)->where('id','!=', Auth::user()->id)->orderBy('created_at','desc')->with('place');
+        $data = User::where('id','!=', Auth::user()->id)->orderBy('created_at','desc')->with('place');
         return DataTables::of($data)
         ->addIndexColumn()
         ->addColumn('tempat', function($row){
@@ -38,16 +38,48 @@ class UserController extends Controller
                 return "User 2";
             }
         })
+        ->editColumn('is_delete', function($row){
+            if($row->is_delete == 0){
+                return "<span class='badge bg-success'>Aktif</span>";
+            }else{
+                return "<span class='badge bg-danger'>Non Aktif</span>";
+            }
+        })
         ->addColumn('action', function($row){
          
-            $btn = '<div class="btn btn-danger btn-sm btn-delete mr-2 waves-effect" data-id="'.$row->id.'">
-            <i class="fa fa-trash"></i> Hapus
-        </div> &nbsp;';
+            if($row->is_delete == 0){
+                $btn = '<div class="btn btn-danger btn-sm btn-delete mr-2 waves-effect" data-id="'.$row->id.'">
+                Non Aktifkan
+            </div> &nbsp;';
+            }else{
+                $btn = '<div class="btn btn-success btn-sm btn-delete mr-2 waves-effect" data-id="'.$row->id.'">
+                Aktifkan
+            </div> &nbsp;';
+            }
             $btn .= '<div class="btn btn-warning btn-sm edit mr-2 waves-effect" data-id="'.$row->id.'"  data-toggle="modal"><i class="fa fa-edit"></i> Ubah</div>';
             return $btn;
         })
+
+        ->filter(function ($instance) use ($request) {
        
-        ->rawColumns(['action','tempat','level'])
+            if ($request->get('place_id')) {
+                $instance->where('place_id', $request->get('place_id'));
+            }
+            if (!empty($request->get('search'))) {
+                $instance->where(function($w) use($request){
+                   $search = $request->get('search');
+                   $w->orWhere('nama', 'LIKE', "%$search%")
+                   ->orWhereHas('place', function($q) use($search){
+                     $q->where('nama', 'LIKE', "%$search%");
+                   })
+                  ->orWhere('kontak', 'LIKE', "%$search%")
+                  ->orWhere('alamat', 'LIKE', "%$search%")
+                  ->orWhere('email', 'LIKE', "%$search%");
+               });
+            }
+        })
+       
+        ->rawColumns(['action','tempat','level','is_delete'])
         ->make(true);
     }
 
@@ -78,6 +110,8 @@ class UserController extends Controller
             $user = new User;
             $user->nama = $request->nama;
             $user->email = $request->email;
+            $user->alamat = $request->alamat;
+            $user->kontak = $request->kontak;
             $user->password = bcrypt($request->password);
             $user->role = $request->level;
             $user->place_id = $request->place_id;
@@ -94,6 +128,8 @@ class UserController extends Controller
                
                 $user->nama = $request->nama;
                 $user->email = $request->email;
+                $user->alamat = $request->alamat;
+                $user->kontak = $request->kontak;
                 $user->password = bcrypt($request->password);
                 $user->role = $request->level;
                 $user->place_id = $request->place_id;
@@ -103,6 +139,8 @@ class UserController extends Controller
                
                 $user->nama = $request->nama;
                 $user->email = $request->email;
+                $user->alamat = $request->alamat;
+                $user->kontak = $request->kontak;
                 $user->role = $request->level;
                 $user->place_id = $request->place_id;
                 $user->save();
@@ -154,9 +192,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $data = User::find($id)->update([
-            'is_delete'=>1
-        ]);
+        $data = User::find($id);
+        $data->is_delete =  $data->is_delete == 1?0:1;
+        $data->save();
         Session::flash('success', 'Berhasil dihapus'); 
         return 1;
     }

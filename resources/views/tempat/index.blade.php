@@ -1,6 +1,6 @@
 @extends('template')
 @section('title')
-    Tempat Wisata
+    Rekanan Usaha
 @endsection
 @section('css')
     
@@ -15,10 +15,10 @@
             <div class="col-12">
                 <div class="page-title-box d-flex align-items-center justify-content-between">
                     <div class="page-title">
-                        <h4 class="mb-0 font-size-18">Tempat Wisata</h4>
+                        <h4 class="mb-0 font-size-18">Rekanan Usaha</h4>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item "><a href="javascript: void(0);">Home</a></li>
-                            <li class="breadcrumb-item active">Tempat Wisata</li>
+                            <li class="breadcrumb-item active">Rekanan Usaha</li>
                         </ol>
                     </div>
                     <div class="state-informatio d-sm-block">
@@ -36,7 +36,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Tempat Wisata</h4>
+                            <h4 class="card-title">Rekanan Usaha</h4>
                             <div class="table-responsive mt-4">
                                 <table id="datatable-server" class="table table-bordered  nowrap"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -44,6 +44,8 @@
                                         <tr>
                                             <th class="text-center" width="50px">No</th>
                                             <th>Nama</th>
+                                            <th>Jenis Usaha</th>
+                                            <th>Status</th>
                                             <th class="text-center"></th>
                                         </tr>
                                     </thead>
@@ -68,14 +70,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Tambah Tempat Wisata
+                    <h5 class="modal-title" id="myModalLabel">Tambah Rekanan Usaha
                     </h5>
                     <button type="button" class="btn-close"
                         data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{route('tempat-wisata.store')}}">
+                    <form method="post" action="{{route('rekanan-usaha.store')}}">
                         @csrf
+                        <div class="form-group mb-3">
+                            <label class="form-label">Jenis Usaha</label>
+                            <select name="jenis_usaha" class="form-control select2" required>
+                               <option value=""></option>
+                                @foreach ($jenis_usaha as $item)
+                                <option value="{{$item->nama}}">{{$item->nama}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group mb-3">
                             <label class="form-label">Nama</label>
                             <input type="text" class="form-control"  name="nama" required>
@@ -100,15 +111,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Ubah Tempat Wisata
+                    <h5 class="modal-title" id="myModalLabel">Ubah Rekanan Usaha
                     </h5>
                     <button type="button" class="btn-close"
                         data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{route('tempat-wisata.store')}}">
+                    <form method="post" action="{{route('rekanan-usaha.store')}}">
                         @csrf
                         <input type="hidden" name="id" id="id">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Jenis Usaha</label>
+                            <select name="jenis_usaha" id="jenis_usaha" class="form-control select2" required>
+                                @foreach ($jenis_usaha as $item)
+                                <option value="{{$item->nama}}">{{$item->nama}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group mb-3">
                             <label class="form-label">Nama</label>
                             <input type="text" class="form-control" id="nama" name="nama" required>
@@ -139,10 +158,12 @@
                 processing: true,
                 serverSide: true,
                 scrollX:true,
-                ajax: "{{ route('tempat-wisata.data') }}",
+                ajax: "{{ route('rekanan-usaha.data') }}",
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                     {data: 'nama', name: 'nama'},
+                    {data: 'jenis_usaha', name: 'jenis_usaha'},
+                    {data: 'is_delete', name: 'is_delete'},
                     {data: 'action', name: 'action', orderable: false, searchable: false, width: '30%'},
                 ],
                 columnDefs:[
@@ -161,7 +182,7 @@
                
                 $('.loading').removeAttr('hidden')
                 var id = $(this).attr('data-id');
-                url = '{{route("tempat-wisata.edit",":id")}}';
+                url = '{{route("rekanan-usaha.edit",":id")}}';
                 url = url.replace(':id', id);
                 _token = $('input[name=_token]').val();
                 $.ajax({
@@ -172,6 +193,7 @@
                 .done(function(response) {
                     console.log(response)
                     $('#id').val(response.id)
+                    $('#jenis_usaha').val(response.jenis_usaha).trigger('change')
                     $('#nama').val(response.nama)
                     $('#kode_invoice').val(response.kode_invoice)
                     $('#myModal2').modal('show');
@@ -189,11 +211,11 @@
         })
         $(document).on('click','.btn-delete',function(){
                 var id = $(this).attr('data-id')
-                var url = "{{route('tempat-wisata.destroy',':id')}}";
+                var url = "{{route('rekanan-usaha.destroy',':id')}}";
                 url = url.replace(':id',id)
                 _token = $('input[name=_token]').val();
                 Swal.fire({
-                    title: 'Apakah anda yakin ingin menghapus data ini ?',
+                    title: 'Apakah anda yakin ingin mengubah status data ini ?',
                     showCancelButton: true,
                     confirmButtonColor: "#35a989",
                     confirmButtonText: "Ya",
@@ -211,7 +233,7 @@
                             success: function(resp){
                                 console.log(resp)
                                 if(resp == 1){
-                                    window.location = '{{route("tempat-wisata.index")}}';
+                                    window.location = '{{route("rekanan-usaha.index")}}';
                                 }
                             }
                         });

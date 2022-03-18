@@ -35,19 +35,32 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-
                             <h4 class="card-title">List User</h4>
-                         
-                            <div class="table-responsive">
+                            <div class="row mt-4">
+                                <div class="col-md-2">
+                                    <label class="form-label">Rekanan Usaha</label>
+                                    <select name="tempat" id="tempat" class="form-control select2-filter-search">
+                                        <option value="">Semua</option>
+                                        @foreach ($tempat as $item)
+                                        <option value="{{$item->id}}">{{$item->nama}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-responsive mt-4">
 
                                 <table id="datatable-server" class="table table-bordered nowrap"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
                                             <th class="text-center" width="50px">No</th>
-                                            <th class="text-center">Nama</th>
+                                            <th class="text-center">Rekanan Usaha</th>
+                                            <th class="text-center">Nama Pengguna</th>
+                                            <th class="text-center">Kontak</th>
+                                            <th class="text-center">Alamat</th>
                                             <th class="text-center">Email</th>
                                             <th class="text-center">Level</th>
+                                            <th>Status</th>
                                             <th class="text-center"></th>
                                         </tr>
                                     </thead>
@@ -79,14 +92,6 @@
                     <form method="post" action="{{route('user.store')}}">
                         @csrf
                         <div class="form-group mb-3">
-                            <label class="form-label">Nama</label>
-                            <input type="text" class="form-control"  name="nama" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" required>
-                        </div>
-                        <div class="form-group mb-3">
                             <label class="form-label">Level</label>
                             <select name="level" id="level2" class="form-control" required>
                                 <option value="1">Admin</option>
@@ -95,7 +100,7 @@
                             </select>
                         </div>
                         <div class="form-group mb-3 place" hidden>
-                            <label class="form-label">Tempat Wisata</label>
+                            <label class="form-label">Rekanan Usaha</label>
                             <select name="place_id" id="place_id2" class="form-control select2">
                                 <option value=""></option>
                                 @foreach ($tempat as $item)
@@ -104,11 +109,33 @@
                             </select>
                         </div>
                         <div class="form-group mb-3">
+                            <label class="form-label">Nama</label>
+                            <input type="text" class="form-control"  name="nama" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Kontak</label>
+                            <input type="text" class="form-control"  name="kontak" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Alamat</label>
+                            <input type="text" class="form-control"  name="alamat" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                   
+                        <div class="form-group mb-3">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" required>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Konfirmasi Password</label>
+                            <input type="password" class="form-control" id="konfirmasi_password" name="konfirmasi_password" required>
+                            <label for="" class="text-danger error" hidden>Konfirmasi password salah</label>
                         </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary waves-effect">Simpan</button>
+                        <button type="submit" class="btn btn-primary waves-effect btn-submit">Simpan</button>
                     </div>
                     </form>
                 </div>  
@@ -132,14 +159,6 @@
                         @csrf
                         <input type="hidden" name="id" id="id">
                         <div class="form-group mb-3">
-                            <label class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="nama" name="nama" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="form-group mb-3">
                             <label class="form-label">Level</label>
                             <select name="level" id="level" class="form-control" required>
                                 <option value="1">Admin</option>
@@ -148,7 +167,7 @@
                             </select>
                         </div>
                         <div class="form-group mb-3 place2">
-                            <label class="form-label">Tempat Wisata</label>
+                            <label class="form-label">Rekanan Usaha</label>
                             <select name="place_id" id="place_id" class="form-control select2" required>
                                 <option value=""></option>
                                 @foreach ($tempat as $item)
@@ -156,6 +175,23 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Kontak</label>
+                            <input type="text" class="form-control"  name="kontak" id="kontak" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Alamat</label>
+                            <input type="text" class="form-control"  name="alamat" id="alamat" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                   
                         <a id="" href="#" class="text-blue change_password" style="width:100%">Ubah Password</a>
                         <a id="" class="text-red batal" href="#" style="width:100%" hidden>Batal Ubah Password</a>
                         <div class="formpassword">
@@ -163,7 +199,7 @@
                         </div>
                        
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary waves-effect">Simpan</button>
+                        <button type="submit" class="btn btn-primary waves-effect btn-submit2">Simpan</button>
                     </div>
                     </form>
                 </div>  
@@ -180,12 +216,22 @@
                 processing: true,
                 serverSide: true,
                 scrollX:true,
-                ajax: "{{ route('user.data') }}",
+                ajax: {
+                    url: "{{ route('user.data') }}",
+                    data: function (d) {
+                            d.search = $('input[type="search"]').val(),
+                            d.place_id = $('#tempat').val()
+                        }
+                },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                    {data: 'tempat', name: 'tempat'},
                     {data: 'nama', name: 'nama'},
+                    {data: 'kontak', name: 'kontak'},
+                    {data: 'alamat', name: 'alamat'},
                     {data: 'email', name: 'email'},
                     {data: 'level', name: 'level'},
+                    {data: 'is_delete', name: 'is_delete'},
                     {data: 'action', name: 'action', orderable: false, searchable: false, width: '30%'},
                 ],
                 columnDefs:[
@@ -197,11 +243,62 @@
                 ]
             });
 
+            $('#tempat').change(function(){
+                table.draw();
+            });
+
+        function checkPass(a, b, type){
+            if(type == 1){
+                if(a == b){
+                    $('.btn-submit').prop('disabled', false)
+                    $('.error').prop('hidden', true)
+                }else{
+                    $('.btn-submit').prop('disabled', true)
+                    $('.error').prop('hidden', false)
+                }
+            }else{
+                if(a == b){
+                    $('.btn-submit2').prop('disabled', false)
+                    $('.error2').prop('hidden', true)
+                }else{
+                    $('.btn-submit2').prop('disabled', true)
+                    $('.error2').prop('hidden', false)
+                }
+            }
+        }
+
+        $(document).on('keyup','#password',function(){
+            if($('#konfirmasi_password').val() != ''){
+                checkPass($('#password').val(), $('#konfirmasi_password').val(), 1)
+            }
+        })
+
+        $(document).on('keyup','#konfirmasi_password',function(){
+            checkPass($('#password').val(), $('#konfirmasi_password').val(), 1)
+        })
+
+        $(document).on('keyup','#password2',function(){
+            if($('#konfirmasi_password2').val() != ''){
+                checkPass($('#password2').val(), $('#konfirmasi_password2').val(), 2)
+            }
+        })
+
+        $(document).on('keyup','#konfirmasi_password2',function(){
+            checkPass($('#password2').val(), $('#konfirmasi_password2').val(), 2)
+        })
+
+
+
          $('.change_password').click(function(){
             $('.formpassword').append(`
                         <div class="form-group mb-3">
                             <label class="form-label">Password Baru</label>
-                            <input type="password" class="form-control" name="password" required>
+                            <input type="password" class="form-control" id="password2" name="password" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Konfirmasi Password</label>
+                            <input type="password" class="form-control" id="konfirmasi_password2" name="konfirmasi_password" required>
+                            <label for="" class="text-danger error2" hidden>Konfirmasi password salah</label>
                         </div>
             `)
             $('.batal').removeAttr('hidden');
@@ -233,6 +330,8 @@
                 $('#id').val(response.id)
                 $('#nama').val(response.nama)
                 $('#email').val(response.email)
+                $('#kontak').val(response.kontak)
+                $('#alamat').val(response.alamat)
                 $('#level').val(response.role)
                 if(response.role == 3){
                     $('.place2').prop('hidden',false)
@@ -287,7 +386,7 @@
                 url = url.replace(':id',id)
                 _token = $('input[name=_token]').val();
                 Swal.fire({
-                    title: 'Apakah anda yakin ingin menghapus data ini ?',
+                    title: 'Apakah anda yakin ingin mengubah status data ini ?',
                     showCancelButton: true,
                     confirmButtonColor: "#35a989",
                     confirmButtonText: "Ya",

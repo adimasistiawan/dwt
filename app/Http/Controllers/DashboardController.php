@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisProduk;
 use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
 use Carbon\Carbon;
@@ -18,7 +19,15 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $jenis_produk = JenisProduk::where('is_delete', 0)->get();
+        foreach ($jenis_produk as $key => $value) {
+            $value->total = PenjualanDetail::whereHas('penjualan', function($q){
+                $q->whereMonth('tanggal', Carbon::now()->month);
+            })->whereHas('product', function($q) use($value){
+                $q->where('jenis', $value->nama);
+            })->sum('sub_total');;
+        }
+        return view('dashboard', compact('jenis_produk'));
     }
 
     public function filter(Request $request){
