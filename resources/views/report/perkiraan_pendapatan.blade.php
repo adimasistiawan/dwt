@@ -106,7 +106,7 @@
             }
 
             $('.search').click(function(){
-                if($('#dari').val() == '' && $('#sampai').val() == ''){
+                if($('#dari').val() == '' || $('#sampai').val() == '' ||  $('#tempat_wisata').val() == ''){
                     return false;
                 }
                 $('.export').empty();

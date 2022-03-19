@@ -183,7 +183,7 @@ class PenjualanController extends Controller
     }
 
     public function penjualan_sudah_bayar_data(Request $request){
-        $data = Penjualan::where('status',1)->orderBy('created_at','desc')->with('place');
+        $data = Penjualan::where('status',1)->orderBy('tanggal_bayar','desc')->with('place');
     
         return DataTables::of($data)
         ->addIndexColumn()

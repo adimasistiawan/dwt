@@ -174,20 +174,20 @@
                         $('.tbody').append(`
                         <tr>
                             <td class="text-left">`+value.nama+`</td>
-                            <td class="text-right">`+numberWithCommas(value.harga)+`</td>
-                            <td class="text-right">`+numberWithCommas(value.jumlah_penjualan)+`</td>
-                            <td class="text-right">`+numberWithCommas(value.total_pendapatan)+`</td>
+                            <td class="text-right">`+numberWithCommas(parseInt(value.harga))+`</td>
+                            <td class="text-right">`+numberWithCommas(parseInt(value.jumlah_penjualan))+`</td>
+                            <td class="text-right">`+numberWithCommas(parseInt(value.total_pendapatan))+`</td>
                             <td class="text-right">`+numberWithCommas(value.komisi)+`%</td>
-                            <td class="text-right">`+numberWithCommas(value.pendapatan_objek_wisata)+`</td>
-                            <td class="text-right">`+numberWithCommas(value.pendapatan_desa_wisata)+`</td>
+                            <td class="text-right">`+numberWithCommas(parseInt(value.pendapatan_objek_wisata))+`</td>
+                            <td class="text-right">`+numberWithCommas(parseInt(value.pendapatan_desa_wisata))+`</td>
                         </tr>
                         `)
-                        total+=value.pendapatan_desa_wisata
+                        total+=parseInt(value.pendapatan_desa_wisata)
                     });
                     $('.tbody').append(`
                         <tr>
                             <th class="text-right" colspan="6">Total</th>
-                            <th class="text-right">`+numberWithCommas(total)+`</th>
+                            <th class="text-right">`+numberWithCommas(parseInt(total))+`</th>
                         </tr>
                         `)
                     $('.loading').attr('hidden',true)

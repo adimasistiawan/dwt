@@ -141,7 +141,7 @@
             }
 
             $('.search').click(function(){
-                if($('#dari').val() == '' && $('#sampai').val() == '' && $('#tempat_wisata').val() == '' && $('#produk').val() == ''){
+                if($('#dari').val() == '' || $('#sampai').val() == '' || $('#tempat_wisata').val() == '' || $('#produk').val() == ''){
                     return false;
                 }
                 $('.export').empty();
