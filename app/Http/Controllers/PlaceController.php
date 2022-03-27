@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\JenisUsaha;
 use App\Models\Place;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
+use Str;
+use Image;
 
 class PlaceController extends Controller
 {
@@ -68,6 +71,7 @@ class PlaceController extends Controller
      */
     public function store(Request $request)
     {
+  
         if(!$request->id){
             $check = Place::where('kode_invoice', $request->kode_invoice)->count();
             if($check > 0){
@@ -77,6 +81,15 @@ class PlaceController extends Controller
             $data->nama = $request->nama;
             $data->jenis_usaha = $request->jenis_usaha;
             $data->kode_invoice = $request->kode_invoice;
+            if($request->file('logo')){
+                $file = $request->file('logo');
+                $name   = Str::random(20).".".$file->getClientOriginalExtension();
+                $img = Image::make($file);
+                $img->resize(200, 100, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save(\base_path() ."/public/logo/".$name);
+                $data->logo = $name;
+            }
             $data->save();
         }else{
             $data = Place::find($request->id);
@@ -87,6 +100,21 @@ class PlaceController extends Controller
             $data->nama = $request->nama;
             $data->jenis_usaha = $request->jenis_usaha;
             $data->kode_invoice = $request->kode_invoice;
+            if($request->file('logo')){
+
+                $image_path = 'logo/'.$data->logo;
+                if(File::exists($image_path)) {
+                    File::delete($image_path);
+                }
+
+                $file = $request->file('logo');
+                $name   = Str::random(20).".".$file->getClientOriginalExtension();
+                $img = Image::make($file);
+                $img->resize(200, 100, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save(\base_path() ."/public/logo/".$name);
+                $data->logo = $name;
+            }
             $data->save();
         }
 

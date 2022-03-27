@@ -62,14 +62,17 @@
             position: absolute;
             top: 0;
             left: 20px;
-            height: 130px;
+            height: 100px;
             width: 100px;
         }
     </style>
 </head>
 
 <body>
-    <img src="{{asset('logo.png')}}" class="logo">
+    @php
+        $logo = getSettings('logo');
+    @endphp
+    <img src="{{asset($logo)}}" class="logo">
     <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
         <u>
             <span style="font-size:20px; font-family: 'CustomFontBold';">LAPORAN REKAPITULASI PENDAPATAN UNIT DESA WISATA TARO</span><br>
@@ -118,30 +121,18 @@
         </tfoot>
     </table>
     <br>
-    <br>
     <div style="width: 100%;">
         <table style="width:100%;">
             <tr>
                 <td width="35%">
                     <div>
                         <span>Disiapkan Oleh:</span><br>
-                        <span>Bendahara Unit Desa Wisata Taro</span>
+                        <span>Manajer Unit Desa Wisata Taro</span>
                         <br>
                         <br>
                         <br>
                         <br>
-                        {{getSettings('bendahara')}}
-                    </div>
-                </td>
-                <td width="35%">
-                    <div>
-                        <span>Diketahui Oleh:</span><br>
-                        <span>Kepala Unit Desa Wisata Taro</span>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        {{getSettings('kepala')}}
+                        {{getSettings('manager')}}
                     </div>
                 </td>
                 <td width="35%">
@@ -155,28 +146,47 @@
                         {{getSettings('sekretaris')}}
                     </div>
                 </td>
+                <td width="35%">
+                    <div>
+                        <span>Diketahui Oleh:</span><br>
+                        <span>Ketua Pokdarwis Desa Wisata Taro</span>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        {{getSettings('ketua_pokdarwis')}}
+                    </div>
+                </td>
             </tr>
         </table>
-      
+        <br>
+        <br>
+        {{-- <table style="margin:auto;">
        
-        {{-- <table style="float:right; padding-right:50px">
-           
             <tr>
-                <td>Diperiksa Oleh: <br>Sekretaris BUMDes Sarwada Amerta Taro</td>
+                <td colspan="4" align="center">Diketahui Oleh:</td>
             </tr>
             <tr>
-                <td colspan="3">&nbsp;</td>
+                <td >Ketua Pokdarwis Desa Wisata Taro </td>
+                <td width="100px"></td>
+                <td width="100px"></td>
+                <td>Pengawas Desa Wisata Taro </td>
             </tr>
             <tr>
-                <td colspan="3">&nbsp;</td>
+                <td colspan="4">&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="3">&nbsp;</td>
+                <td colspan="4">&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="3">I Made Rediana</td>
+                <td>  {{getSettings('ketua_pokdarwis')}}</td>
+                <td></td>
+                <td></td>
+                <td>{{getSettings('pengawas')}}</td>
             </tr>
         </table> --}}
+      
+       
     </div>
 </body>
 

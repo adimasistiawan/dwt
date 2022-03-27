@@ -46,10 +46,21 @@
                                             <label class="form-label">Tanggal</label>
                                             <input type="date" class="form-control mb-3"  name="tanggal" required>
                                         </div>
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="validationTooltipUsername">Pajak</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" min="0.1"  step="any" id="pajak" name="pajak">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"
+                                                        id="validationTooltipUsernamePrepend">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="form-label">Keterangan</label>
                                             <textarea name="keterangan" class="form-control mb-3" id="" cols="30" rows="5"></textarea>
                                         </div>
+                                      
                                     </div>
                                     <div class="col-md-9">
                                         <div class="table-responsive">
@@ -98,6 +109,16 @@
                                                     <b id="total">0</b>
                                                   </td>
                                                 </tr>
+                                                <tr id="row-pajak" hidden>
+                                                    <td colspan="2">
+                                                    </td>
+                                                    <td align="right">
+                                                        <b>Pajak <span class="pajak"></span></b>
+                                                    </td>
+                                                    <td align="right">
+                                                      <b id="grand-total">0</b>
+                                                    </td>
+                                                </tr>
                                               </tfoot>
                                             </table>
                                         </div>
@@ -140,21 +161,28 @@
                     var sub_total = parseInt(harga) * parseInt($(qty_input).val())
                     $(sub_total_input).val(numberWithCommas(sub_total)).trigger('change')
                 }
+                getPajak()
             })
 
-            $(document).on('keyup', '.qty', function(){
-                var row = $(this).closest('.tr')
-                if($(this).val() != ''){
-                    var harga_input = $(row).find('.harga')
+            function getSubTotal(row){
+                var qty_input = $(row).find('.qty')
+                var harga_input = $(row).find('.harga')
+                if($(qty_input).val() != '' && $(harga_input).val() != ''){
                     var sub_total_input = $(row).find('.sub_total')
                     var harga = $(harga_input).val();
                     harga = harga.split('.').join("");
-                    var sub_total = parseInt(harga) * parseInt($(this).val())
+                    var sub_total = parseInt(harga) * parseInt($(qty_input).val())
                     $(sub_total_input).val(numberWithCommas(sub_total)).trigger('change')
                 }else{
                     var sub_total_input = $(row).find('.sub_total')
                     $(sub_total_input).val('').trigger('change')
                 }
+            }
+
+            $(document).on('keyup', '.qty', function(){
+                var row = $(this).closest('.tr')
+                getSubTotal(row)
+                getPajak()
             })
 
             $(document).on('change', '.sub_total', function(){
@@ -201,6 +229,23 @@
             $(this).closest('.tr').remove();
           })
 
+          function getPajak(){
+            if($('#total').text() != "0" && $('#pajak').val() != ""){
+                $('#row-pajak').prop('hidden', false)
+                $('.pajak').text($("#pajak").val()+"%")
+                var total = $('#total').text()
+                total = total.split('.').join("");
+                var pajak = parseInt(total) * parseFloat($('#pajak').val()) / 100
+                pajak = pajak + parseInt(total)
+                pajak = numberWithCommas(pajak)
+                $('#grand-total').text(pajak)
+              }else{
+                $('#row-pajak').prop('hidden', true)
+              }
+          }
+          $('#pajak').keyup(function(){
+            getPajak()
+          })
 
             
         })

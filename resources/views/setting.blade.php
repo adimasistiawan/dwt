@@ -43,18 +43,25 @@
                                         <input type="file" class="mt-4 image-input dropify" data-default-file="{{asset(getSettings('logo'))}}" name="logo" accept="image/x-png,image/gif,image/jpeg">
                                     </div>
                                     <div class="form-group mt-4">
-                                        <label for="">Ketua</label>
-                                        <input type="text" name="kepala" value="{{getSettings('kepala')}}" class="form-control">
+                                        <label for="">Manajer Unit Desa Wisata Taro</label>
+                                        <input type="text" name="manager" value="{{getSettings('manager')}}" class="form-control">
                                     </div>
                                     <div class="form-group mt-4">
-                                        <label for="">Bendahara</label>
+                                        <label for="">Ketua Pokdarwis Desa Wisata Taro </label>
+                                        <input type="text" name="ketua_pokdarwis" value="{{getSettings('ketua_pokdarwis')}}" class="form-control">
+                                    </div>
+                                    <div class="form-group mt-4">
+                                        <label for="">Bendahara BUMDes Sarwada Amertha</label>
                                         <input type="text" name="bendahara" value="{{getSettings('bendahara')}}" class="form-control">
                                     </div>
                                     <div class="form-group mt-4">
-                                        <label for="">Sekretaris</label>
+                                        <label for="">Sekretaris BUMDes Sarwada Amerta Taro </label>
                                         <input type="text" name="sekretaris" value="{{getSettings('sekretaris')}}" class="form-control">
                                     </div>
-                                
+                                    <div class="form-group mt-4">
+                                        <label for="">Pengawas Desa Wisata Taro </label>
+                                        <input type="text" name="pengawas" value="{{getSettings('pengawas')}}" class="form-control">
+                                    </div>
                               
                             </div>
 

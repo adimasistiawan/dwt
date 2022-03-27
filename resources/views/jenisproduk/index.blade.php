@@ -133,6 +133,18 @@
                 processing: true,
                 serverSide: true,
                 scrollX:true,
+                "language": {
+                    "lengthMenu": "Lihat _MENU_ data per halaman",
+                    "zeroRecords": "Tidak Ada",
+                    "info": "Menampilkan halaman ke _PAGE_ dari _PAGES_",
+                    "infoEmpty": "Tidak Ada",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "search":"Cari",
+                    "paginate": {
+                        "next":       "Selanjutnya",
+                        "previous":   "Sebelumnya"
+                    },
+                },
                 ajax: "{{ route('jenis-produk.data') }}",
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},

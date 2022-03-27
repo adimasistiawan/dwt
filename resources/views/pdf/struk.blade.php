@@ -62,18 +62,22 @@
             position: absolute;
             top: 0;
             left: 20px;
-            height: 120px;
+            height: 100px;
             width: 100px;
         }
     </style>
 </head>
 
 <body>
+    <img src="{{asset('logo/'.$penjualan->place->logo)}}" class="logo">
     <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
+        <span style="font-size:20px; font-family: 'CustomFontBold';">KUITANSI</span><br>
         <u>
             <span style="font-size:20px; font-family: 'CustomFontBold';">{{$penjualan->place->nama}}</span><br>
         </u>
     </div>
+    <br>
+    <br>
     <span>Tanggal : {{date('d-m-Y', strtotime($penjualan->tanggal))}}</span>
     <br>
     <span>Kode Penjualan : {{$penjualan->kode}}</span>
@@ -107,6 +111,16 @@
                 <td class="td" colspan="3" style="text-align: right; font-family: 'CustomFontBold';">Total</td>
                 <td class="td" style="text-align: right; font-family: 'CustomFontBold';">{{number_format($total , 0, ',', '.')}}</td>
             </tr>
+            @php
+                $pajak = $penjualan->total * $penjualan->pajak / 100;
+                $pajak = $penjualan->total + $pajak;
+            @endphp
+            @if ($penjualan->pajak)
+            <tr class="tr">
+                <td class="td" colspan="3" style="text-align: right; font-family: 'CustomFontBold';">Pajak {{$penjualan->pajak}}%</td>
+                <td class="td" style="text-align: right; font-family: 'CustomFontBold';">{{number_format($pajak , 0, ',', '.')}}</td>
+            </tr>
+            @endif
         </tfoot>
     </table>
     <br>

@@ -62,14 +62,17 @@
             position: absolute;
             top: 0;
             left: 20px;
-            height: 130px;
+            height: 100px;
             width: 100px;
         }
     </style>
 </head>
 
 <body>
-    <img src="{{asset('logo.png')}}" class="logo">
+    @php
+    $logo = getSettings('logo');
+@endphp
+<img src="{{asset($logo)}}" class="logo">
     <div style="text-align: center; margin-top: 50px; margin-bottom: 50px;">
         <span style="font-size:20px; font-family: 'CustomFontBold';">UNIT DESA WISATA TARO</span><br>
         <u>

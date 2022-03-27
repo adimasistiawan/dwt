@@ -62,14 +62,17 @@
             position: absolute;
             top: 0;
             left: 20px;
-            height: 120px;
+            height: 100px;
             width: 100px;
         }
     </style>
 </head>
 
 <body>
-    <img src="{{asset('logo.png')}}" class="logo">
+    @php
+        $logo = getSettings('logo');
+    @endphp
+    <img src="{{asset($logo)}}" class="logo">
     <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
         <u>
             <span style="font-size:20px; font-family: 'CustomFontBold';">INVOICE</span><br>
@@ -147,7 +150,7 @@
     <table style="float:right; padding-right:100px">
        
         <tr>
-            <td>Diketahui Oleh: <br>Kepala Unit Desa Wisata Taro</td>
+            <td>Diketahui Oleh: <br>Manajer Unit Desa Wisata Taro</td>
         </tr>
         <tr>
             <td colspan="3">&nbsp;</td>
@@ -159,7 +162,7 @@
             <td colspan="3">&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="3">{{getSettings('kepala')}}</td>
+            <td colspan="3">{{getSettings('manager')}}</td>
         </tr>
     </table>
 </body>

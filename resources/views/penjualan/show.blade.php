@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <h4 class="card-title mb-4">Detail Penjualan</h4>
                             @if(Auth::user()->role == 3)
-                            <a href="{{route('penjualan.struk',$data->id)}}" target="blank" class="btn btn-primary mb-4">Cetak Struk</a>
+                            <a href="{{route('penjualan.struk',$data->id)}}" target="blank" class="btn btn-primary mb-4">Cetak Kuitansi</a>
                             @endif
                             <div class="row">
                                 <div class="col-md-4">
@@ -74,12 +74,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    @if ($data->status == 1)
+                                    @if ($data->pajak != null)
                                     <div class="mb-4">
-                                        <h6>Tanggal Bayar</h6>
-                                        <span>{{date('d-m-Y', strtotime($data->tanggal_bayar))}}</span>
+                                        <h6>Pajak {{$data->pajak}}%</h6>
+                                        @php
+                                            $pajak = $data->total * $data->pajak / 100;
+                                            $pajak = $data->total + $pajak;
+                                        @endphp
+                                        <span>{{number_format($pajak , 0, ',', '.')}}</span>
                                     </div>
                                     @endif
+                                    <div class="mb-4">
+                                        <h6>Tanggal Bayar</h6>
+                                        <span>{{$data->tanggal_bayar ==  null ? "-":date('d-m-Y', strtotime($data->tanggal_bayar))}}</span>
+                                    </div>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="table-responsive">
@@ -120,6 +128,18 @@
                                                 <b id="total">{{ number_format($data->total , 0, ',', '.');}}</b>
                                               </td>
                                             </tr>
+                                            @if($data->pajak != null)
+                                            <tr>
+                                                <td colspan="2">
+                                                </td>
+                                                <td align="right">
+                                                    <b>Pajak {{$data->pajak}}%</b>
+                                                </td>
+                                                <td align="right">
+                                                  <b id="pajak">{{ number_format($pajak , 0, ',', '.');}}</b>
+                                                </td>
+                                            </tr>
+                                            @endif
                                           </tfoot>
                                         </table>
                                     </div>

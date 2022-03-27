@@ -62,14 +62,17 @@
             position: absolute;
             top: 0;
             left: 20px;
-            height: 120px;
+            height: 100px;
             width: 100px;
         }
     </style>
 </head>
 
 <body>
-    <img src="{{asset('logo.png')}}" class="logo">
+    @php
+        $logo = getSettings('logo');
+    @endphp
+    <img src="{{asset($logo)}}" class="logo">
     <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
         <u>
             <span style="font-size:20px; font-family: 'CustomFontBold';">KUITANSI</span><br>
@@ -96,6 +99,11 @@
                 <td style="width: 40px;">{{number_format($total , 0, ',', '.')}}</td>
             </tr>
             <tr >
+                <td style="font-family: 'CustomFontBold'; width: 150px;">Terbilang</td>
+                <td style="width: 10px;">:</td>
+                <td style="width: 40px;"><i>{{$terbilang}}</i></td>
+            </tr>
+            <tr >
                 <td style="font-family: 'CustomFontBold'; width: 150px;">Untuk Pembayaran</td>
                 <td style="width: 10px;">:</td>
                 <td style="width: 40px;">{{$no_invoice}}</td>
@@ -109,7 +117,7 @@
     <table style="float:left;">
        
         <tr>
-            <td>Diterima Oleh: <br>Kepala Unit Desa Wisata Taro</td>
+            <td>Diterima Oleh: <br>Manajer Unit Desa Wisata Taro</td>
         </tr>
         <tr>
             <td colspan="3">&nbsp;</td>
@@ -121,7 +129,7 @@
             <td colspan="3">&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="3">{{getSettings('kepala')}}</td>
+            <td colspan="3">{{getSettings('manager')}}</td>
         </tr>
     </table>
     <table style="float:right; padding-right:100px">

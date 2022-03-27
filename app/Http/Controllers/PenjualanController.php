@@ -208,6 +208,9 @@ class PenjualanController extends Controller
         // })
         ->addColumn('action', function($row){
             $btn = '<a href="'.route('penjualan.show', $row->id).'" class="btn btn-success btn-sm mr-2 waves-effect"><i class="fa fa-search"></i> Lihat</a> &nbsp;';
+            if($row->status == 1){
+                $btn .= '<div class="btn btn-danger btn-sm mr-2 btn-change-status waves-effect"  data-id="'.$row->id.'"><i class="fa fa-chevron-left"></i> Belum Dibayar</div> &nbsp;';
+            }
         
             return $btn;
         })
@@ -288,6 +291,7 @@ class PenjualanController extends Controller
         }
         $data->total = $total;
         $data->total_qty = $total_qty;
+        $data->pajak = $request->pajak;
         $data->save();
         
         foreach ($request->product_id as $key => $value) {
@@ -369,7 +373,8 @@ class PenjualanController extends Controller
 
     public function change_status($id)
     {
-        Penjualan::where('status',0)->where('id', $id)->update(['status' => 1, 'tanggal_bayar' => Carbon::now()]);
+        $data = Penjualan::find($id);
+        Penjualan::where('id', $id)->update(['status' => $data->status==1?0:1, 'tanggal_bayar' => $data->status==1?null:Carbon::now()]);
         Session::flash('success', 'Berhasil'); 
         return 1;
     }

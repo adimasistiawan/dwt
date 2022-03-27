@@ -10,6 +10,7 @@ use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Riskihajar\Terbilang\Facades\Terbilang;
 
 class ReportController extends Controller
 {
@@ -87,8 +88,9 @@ class ReportController extends Controller
         }
 
         $no_invoice = Place::find($request->id)->kode_invoice.$request->tahun.str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
-        $no = Place::find($request->id)->kode_invoice.'/'.$request->tahun.'/'.str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
-        return['no_invoice' => $no_invoice, 'tempat_wisata'=> Place::find($request->id)->nama, 'total' => $total, 'no' => $no];
+        $no = 'KUT/'.Place::find($request->id)->kode_invoice.'/'.$request->tahun.'/'.str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
+        $terbilang = Terbilang::make($total);
+        return['no_invoice' => $no_invoice, 'tempat_wisata'=> Place::find($request->id)->nama, 'total' => $total, 'no' => $no, 'terbilang' => $terbilang];
     }
 
     public function kuitansi_pdf($id, $tahun, $bulan, $tanggal)
@@ -108,8 +110,9 @@ class ReportController extends Controller
         }
 
         $no_invoice = Place::find($id)->kode_invoice.$tahun.str_pad($bulan, 2, '0', STR_PAD_LEFT);
-        $no = Place::find($id)->kode_invoice.'/'.$tahun.'/'.str_pad($bulan, 2, '0', STR_PAD_LEFT);
-        $pdf =  PDF::loadView('pdf.kuitansi',['no_invoice' => $no_invoice, 'tempat_wisata'=> Place::find($id)->nama, 'total' => $total, 'no' => $no, 'tanggal'=>$tanggal])->setPaper('a4', 'portrait');
+        $no = 'KUT/'.Place::find($id)->kode_invoice.'/'.$tahun.'/'.str_pad($bulan, 2, '0', STR_PAD_LEFT);
+        $terbilang = Terbilang::make($total);
+        $pdf =  PDF::loadView('pdf.kuitansi',['no_invoice' => $no_invoice, 'tempat_wisata'=> Place::find($id)->nama, 'total' => $total, 'no' => $no, 'tanggal'=>$tanggal,'terbilang' => $terbilang])->setPaper('a4', 'portrait');
         return $pdf->stream();
     }
 
@@ -237,7 +240,7 @@ class ReportController extends Controller
 
     public function get_produk($id)
     {
-        $data = Product::where('place_id', $id)->where('is_delete',0)->get();
+        $data = Product::where('place_id', $id)->get();
         return $data;
     }
 
@@ -250,7 +253,7 @@ class ReportController extends Controller
     public function produk_data(Request $request)
     {
         $data = PenjualanDetail::where('product_id', $request->product_id)->whereHas('penjualan', function($q) use ($request){
-            $q->where('place_id', $request->place_id);
+            $q->where('place_id', $request->place_id)->whereDate('tanggal','>=',$request->dari)->whereDate('tanggal', '<=', $request->sampai);
         })->with('penjualan')->get();
 
         $place = Place::find($request->place_id);
@@ -264,8 +267,8 @@ class ReportController extends Controller
 
     public function produk_pdf($place_id, $product_id, $dari, $sampai)
     {
-        $data = PenjualanDetail::where('product_id', $product_id)->whereHas('penjualan', function($q) use ($place_id){
-            $q->where('place_id', $place_id);
+        $data = PenjualanDetail::where('product_id', $product_id)->whereHas('penjualan', function($q) use ($place_id, $dari, $sampai){
+            $q->where('place_id', $place_id)->whereDate('tanggal','>=',$dari)->whereDate('tanggal', '<=', $sampai);
         })->with('penjualan')->get();
 
         $place = Place::find($place_id);

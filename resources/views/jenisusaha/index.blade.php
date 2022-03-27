@@ -134,6 +134,18 @@
                 serverSide: true,
                 scrollX:true,
                 ajax: "{{ route('jenis-usaha.data') }}",
+                "language": {
+                    "lengthMenu": "Lihat _MENU_ data per halaman",
+                    "zeroRecords": "Tidak Ada",
+                    "info": "Menampilkan halaman ke _PAGE_ dari _PAGES_",
+                    "infoEmpty": "Tidak Ada",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "search":"Cari",
+                    "paginate": {
+                        "next":       "Selanjutnya",
+                        "previous":   "Sebelumnya"
+                    },
+                },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                     {data: 'nama', name: 'nama'},

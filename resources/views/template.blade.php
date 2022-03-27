@@ -184,7 +184,7 @@
                         <h2>POST</h2>
                     </span>
                     <span class="logo-lg">
-                        <img src="{{asset(getSettings('logo'))}}" width="150px" height="50px" alt="">
+                        <img src="{{asset(getSettings('logo'))}}" class="img-fluid" style="max-height: 70px; max-width:130px;" alt="" >
                     </span>
                 </a>
 
@@ -193,7 +193,7 @@
                         <h4>POST</h4>
                     </span>
                     <span class="logo-lg">
-                        <img src="{{asset(getSettings('logo'))}}" width="200px" height="50px" alt="">
+                        <img src="{{asset(getSettings('logo'))}}" alt="" class="img-fluid" style="max-height: 70px; max-width:130px;" >
                     </span>
                 </a>
             </div>
@@ -255,7 +255,7 @@
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{route('jenis-usaha.index')}}">Jenis Usaha</a></li>
                                     <li><a href="{{route('rekanan-usaha.index')}}">Rekanan Usaha</a></li>
-                                    <li><a href="{{route('user.index')}}">User</a></li>
+                                    <li><a href="{{route('user.index')}}">Pengguna</a></li>
                                     <li><a href="{{route('jenis-produk.index')}}">Jenis Produk</a></li>
                                     <li><a href="{{route('produk.index')}}">Produk</a></li>
                                 </ul>

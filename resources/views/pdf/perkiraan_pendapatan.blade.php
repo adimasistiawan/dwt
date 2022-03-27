@@ -62,14 +62,17 @@
             position: absolute;
             top: 0;
             left: 20px;
-            height: 130px;
+            height: 100px;
             width: 100px;
         }
     </style>
 </head>
 
 <body>
-    <img src="{{asset('logo.png')}}" class="logo">
+    @php
+    $logo = getSettings('logo');
+@endphp
+<img src="{{asset($logo)}}" class="logo">
     <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
         <u>
             <span style="font-size:20px; font-family: 'CustomFontBold';">LAPORAN PERKIRAAN PENDAPATAN UNIT DESA WISATA TARO</span><br>
@@ -126,23 +129,12 @@
                 <td width="35%">
                     <div>
                         <span>Disiapkan Oleh:</span><br>
-                        <span>Bendahara Unit Desa Wisata Taro</span>
+                        <span>Manajer Unit Desa Wisata Taro</span>
                         <br>
                         <br>
                         <br>
                         <br>
-                        {{getSettings('bendahara')}}
-                    </div>
-                </td>
-                <td width="35%">
-                    <div>
-                        <span>Diketahui Oleh:</span><br>
-                        <span>Kepala Unit Desa Wisata Taro</span>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        {{getSettings('kepala')}}
+                        {{getSettings('manager')}}
                     </div>
                 </td>
                 <td width="35%">
@@ -154,6 +146,17 @@
                         <br>
                         <br>
                         {{getSettings('sekretaris')}}
+                    </div>
+                </td>
+                <td width="35%">
+                    <div>
+                        <span>Diketahui Oleh:</span><br>
+                        <span>Ketua Pokdarwis Desa Wisata Taro</span>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        {{getSettings('ketua_pokdarwis')}}
                     </div>
                 </td>
             </tr>

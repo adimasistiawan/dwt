@@ -1,6 +1,6 @@
 @extends('template')
 @section('title')
-    User
+    Pengguna
 @endsection
 @section('css')
     
@@ -14,10 +14,10 @@
             <div class="col-12">
                 <div class="page-title-box d-flex align-items-center justify-content-between">
                     <div class="page-title">
-                        <h4 class="mb-0 font-size-18">User</h4>
+                        <h4 class="mb-0 font-size-18">Pengguna</h4>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item "><a href="javascript: void(0);">Home</a></li>
-                            <li class="breadcrumb-item active">User</li>
+                            <li class="breadcrumb-item active">Pengguna</li>
                         </ol>
                     </div>
                     <div class="state-informatio d-sm-block">
@@ -35,7 +35,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">List User</h4>
+                            <h4 class="card-title">List Pengguna</h4>
                             <div class="row mt-4">
                                 <div class="col-md-2">
                                     <label class="form-label">Rekanan Usaha</label>
@@ -83,7 +83,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Tambah User
+                    <h5 class="modal-title" id="myModalLabel">Tambah Pengguna
                     </h5>
                     <button type="button" class="btn-close"
                         data-bs-dismiss="modal" aria-label="Close"></button>
@@ -149,7 +149,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Ubah User
+                    <h5 class="modal-title" id="myModalLabel">Ubah Pengguna
                     </h5>
                     <button type="button" class="btn-close"
                         data-bs-dismiss="modal" aria-label="Close"></button>
@@ -216,6 +216,18 @@
                 processing: true,
                 serverSide: true,
                 scrollX:true,
+                "language": {
+                    "lengthMenu": "Lihat _MENU_ data per halaman",
+                    "zeroRecords": "Tidak Ada",
+                    "info": "Menampilkan halaman ke _PAGE_ dari _PAGES_",
+                    "infoEmpty": "Tidak Ada",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "search":"Cari",
+                    "paginate": {
+                        "next":       "Selanjutnya",
+                        "previous":   "Sebelumnya"
+                    },
+                },
                 ajax: {
                     url: "{{ route('user.data') }}",
                     data: function (d) {

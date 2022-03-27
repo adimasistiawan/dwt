@@ -111,6 +111,11 @@
                                                     <td><span class="total"></span></td>
                                                 </tr>
                                                 <tr>
+                                                    <td><b>Terbilang</b></td>
+                                                    <td width="30px" align="center">:</td>
+                                                    <td><span class="terbilang"></span></td>
+                                                </tr>
+                                                <tr>
                                                     <td><b>Untuk Pembayaran</b></td>
                                                     <td width="30px" align="center">:</td>
                                                     <td><span class="no_invoice"></span></td>
@@ -186,6 +191,7 @@
                     $('.dari').text(response['tempat_wisata'])
                     $('.total').text(numberWithCommas(response['total']))
                     $('.tanggal').text(moment(tanggal).format("DD-MM-YYYY"))
+                    $('.terbilang').text(response['terbilang'])
 
                     $('.loading').attr('hidden',true)
                 })

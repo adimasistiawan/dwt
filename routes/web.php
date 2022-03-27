@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/penjualan-belum-bayar', [PenjualanController::class, 'penjualan_belum_bayar'])->name('penjualan.belum_bayar');
         Route::get('/penjualan-belum-bayar/data', [PenjualanController::class, 'penjualan_belum_bayar_data'])->name('penjualan.belum_bayar.data');
-        Route::get('/struk-penjualan/{id}', [PenjualanController::class, 'struk'])->name('penjualan.struk');
+
 
         Route::get('invoice/', [ReportController::class, 'invoice'])->name('report.invoice');
         Route::post('invoice/data', [ReportController::class, 'invoice_data'])->name('report.invoice.data');
@@ -76,7 +76,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/penjualan/change-status-all', [PenjualanController::class, 'change_status_all'])->name('penjualan.change-status-all');
         Route::resource('penjualan', PenjualanController::class);
 
-       
+        Route::get('/struk-penjualan/{id}', [PenjualanController::class, 'struk'])->name('penjualan.struk');
     });
 
     Route::middleware(['user1'])->group(function () {

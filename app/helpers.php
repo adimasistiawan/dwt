@@ -43,5 +43,6 @@ function month($month){
 
 function getSettings($nama)
 {
-    return Setting::where('nama', $nama)->first()->value;
+    $value = Setting::where('nama', $nama)->first();
+    return $value->value;
 }
